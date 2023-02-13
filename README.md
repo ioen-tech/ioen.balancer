@@ -22,3 +22,54 @@ after we have done that we will implement some Ethereum Smart contract code into
 as mentioned my objective is to have 50 users on this initial setup that will be really close friends and family type people so that's our first goal.
 
 Ill setup a new repo for this new app and will copy this readme to it. I think first thing will be to look at this code and look into capacitor and then you and i grab a call and plan how we can start building it.
+
+## Developer Documentation
+
+The first time you clone this repository, run (within this directory)
+````bash
+npm install
+````
+
+To run as a webapp and access via localhost:8080, run:
+````bash
+npm run serve
+````
+
+Skip this step if the clone repository already have the capacitor configuration file and if the package.json file already contains the @capacitor/cli and @capacitor/core as dependencies.
+To run as a mobile app, install Capacitor and create a config for your app:
+````bash
+npm install @capacitor/core @capacitor/cli
+npx cap init
+````
+
+Build the web app so that the compiled web assets will be updated and will be copied into each capacitor native platform:
+````bash
+npm run build
+````
+
+Skip this step if the package.json file already contains the @capacitory/ios and @capacitor/android as dependencies.
+Install the native platform you want to target may it be android or ios, run:
+````bash
+npm i @capacitor/ios @capacitor/android
+npx cap add android
+npx cap add ios
+````
+
+This step will open the android studio or xcode depending on your target.  This will also set the local.properties file for your taget which will set the appropriate path of the sdk for both android and ios.
+````bash
+npx cap open android
+npx cap open ios
+````
+
+For MAC users, you may encounter an error with android studio.  Just update the packages that are being suggested with android studio, or update the android studio itself and set the JAVA_HOME path on your bash/zshrc profile.  I've added the following into my .zshrc file:
+````bash
+export JAVA_HOME="$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home"
+````
+
+This step will automatically run the emulator for both android and ios without running the android studio and xcode.
+````bash
+npx cap run android
+npx cap run ios
+````
+
+
