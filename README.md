@@ -37,24 +37,9 @@ To run as a webapp and access via localhost:8080, run:
 npm run serve
 ````
 
-Skip this step if the clone repository already have the capacitor configuration file and if the package.json file already contains the @capacitor/cli and @capacitor/core as dependencies.
-To run as a mobile app, install Capacitor and create a config for your app:
-````bash
-npm install @capacitor/core @capacitor/cli
-npx cap init
-````
-
 Build the web app so that the compiled web assets will be updated and will be copied into each capacitor native platform:
 ````bash
 npm run build
-````
-
-Skip this step if the package.json file already contains the @capacitory/ios and @capacitor/android as dependencies.
-Install the native platform you want to target may it be android or ios, run:
-````bash
-npm i @capacitor/ios @capacitor/android
-npx cap add android
-npx cap add ios
 ````
 
 This step will open the android studio or xcode depending on your target.  This will also set the local.properties file for your taget which will set the appropriate path of the sdk for both android and ios.
