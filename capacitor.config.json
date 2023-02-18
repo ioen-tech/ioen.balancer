@@ -1,0 +1,6 @@
+{
+  "appId": "com.nanogrid.app",
+  "appName": "nanogrid",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

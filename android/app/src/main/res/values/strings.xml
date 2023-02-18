@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">nanogrid</string>
+    <string name="title_activity_main">nanogrid</string>
+    <string name="package_name">com.nanogrid.app</string>
+    <string name="custom_url_scheme">com.nanogrid.app</string>
+</resources>

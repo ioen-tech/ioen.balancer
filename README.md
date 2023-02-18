@@ -25,6 +25,8 @@ Ill setup a new repo for this new app and will copy this readme to it. I think f
 
 ## Developer Documentation
 
+The guide below is only for the frontend, for the backend see https://github.com/redgridone/Redgrid.energy.api
+
 The first time you clone this repository, run (within this directory)
 ````bash
 npm install
