@@ -44,6 +44,8 @@
             </button>
           </div>
         </form>
+
+        <p class="errorMessage">{{ this.error_message }}</p>
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -54,15 +56,11 @@
 import { jSXAttribute } from "@babel/types";
 import axios from "axios";
 export default {
-  data() {
-    return {
-      joinGroupView: false,
-    };
-  },
   name: "GroupManagement",
   data() {
     return {
-      group_name: ''
+      group_name: '',
+      error_message: '',
     }
   },
   async created() {
@@ -84,17 +82,30 @@ export default {
       this.$router.push("/newgroup");
     },
     async joinGroup() {
-      const token = localStorage.getItem('token')
-      const res = await axios.post('/users/join_group', {group_name: this.group_name}, {
-        headers: {
-          Authorization: 'Bearer ' + token
+      try {
+        const token = localStorage.getItem('token')
+        const res = await axios.post('/users/join_group', {group_name: this.group_name}, {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        })
+        this.$router.push('/home')
+      } catch (err) {
+        if (err.response.status != 200) {
+          this.error_message = err.response.data.message
+        } else if (err.request) {
+          console.log(err.request)
+        } else {
+          console.log("unknown error")
         }
-      })
-      this.$router.push('/home')
+      }
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.errorMessage {
+  color: red
+}
 </style>

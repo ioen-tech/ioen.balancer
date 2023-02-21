@@ -45,11 +45,13 @@
               placeholder="Reward Starting Balance"
             />
           </div>
+
+        <p class="errorMessage">{{ error_message }}</p>
           <div class="mb-3">
-            <button type="button" class="btn btn-secondary" @click="goBack">
+            <button type="button" class="btn btn-secondary" @click="goBack" style="width: 30%;">
               Back
             </button>
-            <button type="submit" class="btn btn-primary m-3">Submit</button>
+            <button type="submit" class="btn btn-primary m-3" style="width: 30%;">Submit</button>
           </div>
         </form>
       </div>
@@ -64,9 +66,10 @@ export default {
   data() {
     return {
       group_name: '',
-      min_users: 0,
-      max_users: 0,
-      reward_start_balance: 0,
+      min_users: '',
+      max_users: '',
+      reward_start_balance: '',
+      error_message: '',
     }
   },
   methods: {
@@ -74,24 +77,37 @@ export default {
       this.$router.push("/groupmgmt");
     },
     async handleSubmit() {
-      const groupInfo = {
-        group_name: this.group_name,
-        min_users: this.min_users,
-        max_users: this.max_users,
-        reward_start_balance: this.reward_start_balance
-      }
-
-      const token = localStorage.getItem('token')
-      const res = await axios.post('/users/new_group', groupInfo, {
-        headers: {
-          Authorization: 'Bearer ' + token
+      try {
+        const groupInfo = {
+          group_name: this.group_name,
+          min_users: this.min_users,
+          max_users: this.max_users,
+          reward_start_balance: this.reward_start_balance
         }
-      })
-      this.$router.push('/home')
+
+        const token = localStorage.getItem('token')
+        const res = await axios.post('/users/new_group', groupInfo, {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        })
+        this.$router.push('/home')
+      } catch (err) {
+        if (err.response.status != 200) {
+          this.error_message = err.response.data.message
+        } else if (err.request) {
+          console.log(err.request)
+        } else {
+          console.log("unknown error")
+        }
+      }
     }
   },
 };
 </script>
 
-<style>
+<style scoped>
+.errorMessage {
+  color: red
+}
 </style>

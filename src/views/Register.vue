@@ -93,8 +93,7 @@
               <option value="1">Fronius</option>
             </select>
           </div>
-          <div class="mb-3 d-flex justify-content-between">
-            <div>
+          <div class="input-group">
             <input
               v-model="wallet_address"
               type="text"
@@ -103,12 +102,11 @@
               placeholder="Wallet Address"
               required
             />
-            </div>
-            <div>
               <button type="button" class="btn btn-success">Create New Wallet</button>
-            </div>
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 50%">Register</button>
+          <div class="mt-3">
+            <button type="submit" class="btn btn-primary" style="width: 50%">Register</button>
+          </div>
         </form>
         <div class="d-flex flex-row mt-5 justify-content-center">
           <p>Already have an account?&nbsp;</p><router-link to="/login">Login</router-link>

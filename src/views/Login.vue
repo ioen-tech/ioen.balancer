@@ -54,14 +54,13 @@ export default {
           "password": this.password
         })
   
-        const {token} = res.data
+        const {token, route} = res.data
         this.$store.commit('setToken', token)
         localStorage.setItem('token', token)
 
-        this.$router.push('/groupmgmt')
+        this.$router.push(route)
       } catch (err) {
         if (err.response.status != 200) {
-          console.log(err.response.data)
           this.error_message = 'Incorrect username and/or password'
         } else if (err.request) {
           console.log(err.request)
