@@ -10,11 +10,12 @@
         <form @submit.prevent="handleLogIn">
           <div class="mb-3">
             <input
-              v-model="email_address"
+              v-model="username"
               type="username"
               class="form-control"
               id="username"
               placeholder="Username"
+              required
             />
           </div>
           <div class="mb-3">
@@ -24,12 +25,16 @@
               class="form-control"
               id="password"
               placeholder="Password"
+              required
             />
           </div>
           <div class="mb-3 form-check">
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-primary" style="width: 50%">Login</button>
         </form>
+        <div class="d-flex flex-row mt-5 justify-content-center">
+          <p>Don't have an account?&nbsp;</p><router-link to="/register">SignUp</router-link>
+        </div>
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -45,7 +50,7 @@ export default {
     async handleLogIn() {
       try {
         const res = await axios.post('/users/sign_in', {
-          "email_address": this.email_address,
+          "username": this.username,
           "password": this.password
         })
   
@@ -53,7 +58,7 @@ export default {
         this.$store.commit('setToken', token)
         localStorage.setItem('token', token)
 
-        this.$router.push('/home')
+        this.$router.push('/groupmgmt')
       } catch (err) {
         if (err.response.status != 200) {
           console.log(err.response.data)
@@ -69,7 +74,7 @@ export default {
   },
   data() {
     return {
-      email_address: '',
+      username: '',
       password: '',
       error_message: '',
     }

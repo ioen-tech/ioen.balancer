@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue"
 import Register from "../views/Register.vue"
 import Home from "../views/Home.vue"
+import GroupManagement from "../views/GroupManagement.vue"
+import NewGroup from "../views/NewGroup.vue"
 
 const routes = [
   {
@@ -18,6 +20,16 @@ const routes = [
     path: "/home",
     name: "home",
     component: Home,
+  },
+  {
+    path: "/groupmgmt",
+    name: "groupmgmt",
+    component: GroupManagement,
+  },
+  {
+    path: "/newgroup",
+    name: "newgroup",
+    component: NewGroup,
   },
 ];
 

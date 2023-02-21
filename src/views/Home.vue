@@ -1,6 +1,8 @@
 .<template>
-  <h3 v-if="this.$store.getters.isLoggedIn"> Hello {{ this.$store.state.user.username }}</h3>
+  <h3 v-if="this.$store.getters.isGroupAdmin">I'm a group Addmin</h3>
+  <h3 v-else>I'm a normal Person</h3>
   <h3 v-if="!this.$store.getters.isLoggedIn">You are Not Logged In</h3>
+  
 </template>
 
 <script>
@@ -20,9 +22,7 @@ export default {
     } catch {
       this.$router.push('/login')
     }
-
-
-  }
+  },
 }
 </script>
 

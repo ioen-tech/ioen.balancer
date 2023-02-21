@@ -14,6 +14,7 @@
               class="form-control"
               id="username"
               placeholder="Username"
+              required
             />
           </div>
           <div class="mb-3">
@@ -23,6 +24,7 @@
               class="form-control"
               id="email_address"
               placeholder="Email Address"
+              required
             />
           </div>
           <div class="mb-3">
@@ -32,6 +34,7 @@
               class="form-control"
               id="password"
               placeholder="Password"
+              required
             />
           </div>
           <div class="mb-3">
@@ -41,6 +44,7 @@
               class="form-control"
               id="fronius_userid"
               placeholder="Fronius User ID"
+              required
             />
           </div>
           <div class="mb-3">
@@ -50,6 +54,7 @@
               class="form-control"
               id="fronius_password"
               placeholder="Fronius Password"
+              required
             />
           </div>
           <div class="mb-3">
@@ -59,6 +64,7 @@
               class="form-control"
               id="fronius_accesskey_id"
               placeholder="Fronius AccessKey ID"
+              required
             />
           </div>
           <div class="mb-3">
@@ -68,6 +74,7 @@
               class="form-control"
               id="fronius_accesskey_value"
               placeholder="Fronius AccessKey Value"
+              required
             />
           </div>
           <div class="mb-3">
@@ -77,20 +84,35 @@
               class="form-control"
               id="retailer"
               placeholder="Retailer"
+              required
             />
           </div>
           <div class="mb-3">
+            <select class="form-select" aria-label="Meter Hardware Options" required>
+              <option selected>Please Select your Meter Hardware</option>
+              <option value="1">Fronius</option>
+            </select>
+          </div>
+          <div class="mb-3 d-flex justify-content-between">
+            <div>
             <input
-              v-model="meter_hardware"
+              v-model="wallet_address"
               type="text"
               class="form-control"
-              id="meter_hardware"
-              placeholder="Meter Hardware"
+              id="wallet_address"
+              placeholder="Wallet Address"
+              required
             />
+            </div>
+            <div>
+              <button type="button" class="btn btn-success">Create New Wallet</button>
+            </div>
           </div>
-          <div class="mb-3 form-check"></div>
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-primary" style="width: 50%">Register</button>
         </form>
+        <div class="d-flex flex-row mt-5 justify-content-center">
+          <p>Already have an account?&nbsp;</p><router-link to="/login">Login</router-link>
+        </div>
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -98,21 +120,22 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-import axios from 'axios';
+import { mapMutations } from "vuex";
+import axios from "axios";
 export default {
   data() {
     return {
-      username: '',
-      email: '',
-      password: '',
-      fronius_userid: '',
-      fronius_password: '',
-      fronius_accesskey_id: '',
-      fronius_accesskey_value: '',
-      retailer: '',
-      meter_hardware: '',
-    }
+      username: "",
+      email: "",
+      password: "",
+      fronius_userid: "",
+      fronius_password: "",
+      fronius_accesskey_id: "",
+      fronius_accesskey_value: "",
+      retailer: "",
+      meter_hardware: "",
+      wallet_address: "",
+    };
   },
   methods: {
     async handleSubmit() {
@@ -125,14 +148,15 @@ export default {
         fronius_accesskey_id: this.fronius_accesskey_id,
         fronius_accesskey_value: this.fronius_accesskey_value,
         retailer: this.retailer,
-        meter_hardware: this.meter_hardware
+        meter_hardware: this.meter_hardware,
+        wallet_address: this.wallet_address,
       };
 
-      const res = await axios.post('/users', userInfo)
+      const res = await axios.post("/users", userInfo);
 
-      this.$router.push('/login')
-    }
-  }
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 

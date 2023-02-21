@@ -1,15 +1,19 @@
 <template>
-  <nav>
+  <!-- Image and text -->
+<nav class="navbar navbar-expan-md navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <router-link to="/home" class="navbar-brand" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</router-link>
     <div v-if="!this.$store.getters.isLoggedIn">
-    <router-link to="/login" >Login</router-link> |
-    <router-link to="/register">Register</router-link>
+      <router-link to="/login" class="text-white">Login</router-link> |
+      <router-link to="/register" class="text-white">Register</router-link>
     </div>
 
     <div v-if="this.$store.getters.isLoggedIn">
-    <a href="/login" @click="logout">Logout</a>
+      <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>
     </div>
+  </div>
+</nav>
 
-  </nav>
   <router-view />
 </template>
 
@@ -20,6 +24,8 @@ export default({
       localStorage.setItem('token', null)
       this.$store.commit('setToken', null)
       this.$store.commit('setUser', null)
+
+      this.$router.push('/login')
     }
   }
 })
