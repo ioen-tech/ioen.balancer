@@ -52,7 +52,8 @@ export default {
         const res = await axios.post('/users/sign_in', {
           "username": this.username,
           "password": this.password
-        })
+        }, {withCredentials:true}
+        )
   
         const {token, route} = res.data
         this.$store.commit('setToken', token)

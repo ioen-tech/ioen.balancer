@@ -4,6 +4,7 @@ import Register from "../views/Register.vue"
 import Home from "../views/Home.vue"
 import GroupManagement from "../views/GroupManagement.vue"
 import NewGroup from "../views/NewGroup.vue"
+import Registered from "../views/Registered.vue"
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
     path: "/register",
     name: "register",
     component: Register,
+  },
+  {
+    path: "/registered",
+    name: "registered",
+    component: Registered,
   },
   {
     path: "/home",

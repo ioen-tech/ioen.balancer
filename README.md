@@ -25,7 +25,17 @@ Ill setup a new repo for this new app and will copy this readme to it. I think f
 
 ## Developer Documentation
 
-The guide below is only for the frontend, for the backend see https://github.com/redgridone/Redgrid.energy.api
+###### Pre Requisite
+- [x] Install mysql server on your local machine
+- [x] Install IORedis() server on your local machine.
+
+###### Setup Database
+-  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.  Please see the [README.md](https://github.com/redgridone/Redgrid.energy.schema#readme) file in this repo for more information.
+
+###### Setup API Server (Backend)
+-  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to fillout the needed fields in the .env file.  Please see the [README.md](https://github.com/redgridone/Redgrid.energy.api#readme) in this repo for more information.
+
+###### How to build and run via web or mobile app (Frontend)
 
 The first time you clone this repository, run (within this directory)
 ````bash

@@ -152,7 +152,7 @@ export default {
 
       const res = await axios.post("/users", userInfo);
 
-      this.$router.push("/login");
+      this.$router.push("/registered");
     },
   },
 };

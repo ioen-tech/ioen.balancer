@@ -5,8 +5,14 @@
       <div class="col-md-6">
         <div class="mt-3">
           <h3>New Energy Group</h3>
+          <br>
+          <br>
         </div>
         <form role="form" @submit.prevent="handleSubmit">
+          <div class="mb-3">
+            <label for="formFile" class="form-label d-flex justify-content-start">Select Group Logo</label>
+            <input class="form-control" type="file" id="formFile">
+          </div>
           <div class="mb-3">
             <div class="input-group">
               <input
@@ -15,7 +21,6 @@
                 class="form-control"
                 placeholder="Enter Groupname"
               />
-              <button type="button" class="btn btn-primary">Add Logo</button>
             </div>
           </div>
           <div class="mb-3">

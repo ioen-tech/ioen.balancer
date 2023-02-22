@@ -10,6 +10,9 @@ import axios from 'axios';
 export default {
   name: 'Home',
   async created() {
+
+    // tokenCookie = this.$cookies.get('jwt')
+    // console.log(`cookie token: ${tokenCookie}`)
     const token = localStorage.getItem('token')
     try {
       const res = await axios.get('/users/me', {
