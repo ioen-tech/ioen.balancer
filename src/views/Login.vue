@@ -43,6 +43,7 @@
 
 <script>
 import axios from 'axios';
+import {Device} from '@capacitor/device'
 
 export default {
   name: 'Login',
@@ -52,24 +53,26 @@ export default {
         const res = await axios.post('/users/sign_in', {
           "username": this.username,
           "password": this.password
-        }, {withCredentials:true}
-        )
-  
+        })
+
         const {token, route} = res.data
         this.$store.commit('setToken', token)
         localStorage.setItem('token', token)
 
         this.$router.push(route)
-      } catch (err) {
-        if (err.response.status != 200) {
-          this.error_message = 'Incorrect username and/or password'
-        } else if (err.request) {
-          console.log(err.request)
-        } else {
-          console.log("unknown error")
+      } catch(e) {
+        if (e.response.status != 200) {
+          this.error_message = 'Incorrect username and/or password!'
         }
+        const dev = await Device.getInfo()
+        if (dev.platform == 'ios') {
+          if (e.status != 200) {
+            this.error_message = 'Incorrect username and/or password!'
+          }
+        }
+        console.log(e)
       }
-      
+    
     }
   },
   data() {

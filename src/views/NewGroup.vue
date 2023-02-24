@@ -5,13 +5,20 @@
       <div class="col-md-6">
         <div class="mt-3">
           <h3>New Energy Group</h3>
-          <br>
-          <br>
+          <br />
+          <br />
         </div>
-        <form role="form" @submit.prevent="handleSubmit">
+        <form role="form" @submit.prevent="handleSubmit" enctype="multipart/form-data">
           <div class="mb-3">
-            <label for="formFile" class="form-label d-flex justify-content-start">Select Group Logo</label>
-            <input class="form-control" type="file" id="formFile">
+            <!-- <label for="formFile" class="form-label d-flex justify-content-start">Select Group Logo</label> -->
+            <input
+              class="form-control"
+              type="file"
+              @change="onFileSelected"
+              id="formFile"
+              ref="fileInput"
+              style="display: none"
+            />
           </div>
           <div class="mb-3">
             <div class="input-group">
@@ -21,6 +28,14 @@
                 class="form-control"
                 placeholder="Enter Groupname"
               />
+              <button
+                type="button"
+                @click="this.$refs.fileInput.click()"
+                class="btn btn-success"
+                style="width: 30%"
+              >
+                Add Logo
+              </button>
             </div>
           </div>
           <div class="mb-3">
@@ -51,12 +66,23 @@
             />
           </div>
 
-        <p class="errorMessage">{{ error_message }}</p>
+          <p class="errorMessage">{{ error_message }}</p>
           <div class="mb-3">
-            <button type="button" class="btn btn-secondary" @click="goBack" style="width: 30%;">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="goBack"
+              style="width: 30%"
+            >
               Back
             </button>
-            <button type="submit" class="btn btn-primary m-3" style="width: 30%;">Submit</button>
+            <button
+              type="submit"
+              class="btn btn-primary m-3"
+              style="width: 30%"
+            >
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -70,11 +96,17 @@ import axios from "axios";
 export default {
   data() {
     return {
-      group_name: '',
-      min_users: '',
-      max_users: '',
-      reward_start_balance: '',
-      error_message: '',
+      group_name: "",
+      min_users: "",
+      max_users: "",
+      reward_start_balance: "",
+      error_message: "",
+      selectedFile: null,
+    };
+  },
+  created() {
+    if (!this.$store.getters.isLoggedIn) {
+      this.$router.push('/login')
     }
   },
   methods: {
@@ -83,36 +115,41 @@ export default {
     },
     async handleSubmit() {
       try {
-        const groupInfo = {
-          group_name: this.group_name,
-          min_users: this.min_users,
-          max_users: this.max_users,
-          reward_start_balance: this.reward_start_balance
-        }
+        const fd = new FormData();
+        fd.append("files", this.selectedFile, this.selectedFile.name);
 
-        const token = localStorage.getItem('token')
-        const res = await axios.post('/users/new_group', groupInfo, {
+        fd.append("group_name", this.group_name)
+        fd.append("min_users", this.min_users)
+        fd.append("max_users", this.max_users)
+        fd.append("reward_start_balance", this.reward_start_balance)
+
+        const token = localStorage.getItem("token");
+        const res = await axios.post("/users/new_group", fd,{
           headers: {
-            Authorization: 'Bearer ' + token
-          }
-        })
-        this.$router.push('/home')
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        this.$router.push("/home");
       } catch (err) {
         if (err.response.status != 200) {
-          this.error_message = err.response.data.message
+          this.error_message = err.response.data.message;
         } else if (err.request) {
-          console.log(err.request)
+          console.log(err.request);
         } else {
-          console.log("unknown error")
+          console.log("unknown error");
         }
       }
-    }
+    },
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
+    },
   },
 };
 </script>
 
 <style scoped>
 .errorMessage {
-  color: red
+  color: red;
 }
 </style>

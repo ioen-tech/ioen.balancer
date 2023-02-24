@@ -64,18 +64,13 @@ export default {
     }
   },
   async created() {
-    const token = localStorage.getItem("token");
-    try {
-      const res = await axios.get("/users/me", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      this.$store.commit("setUser", res.data);
-    } catch {
-      this.$router.push("/login");
-    }
+    // Get the logged in user
+    this.$store.dispatch('getLoggedInUser').then((res) => {
+      this.$store.commit('setUser', res.data)
+    }).catch((err) => {
+      console.log(`err ${err}`)
+      this.$router.push('/login')
+    })
   },
   methods: {
     createGroup() {
