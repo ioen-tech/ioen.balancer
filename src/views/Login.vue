@@ -1,10 +1,9 @@
 <template>
   <div class="container">
+    <br />
     <h1>Login to Nanogrid</h1>
     <br />
-    <br />
     <div class="row">
-      <div class="col-md-3"></div>
       <div class="col-md-6">
         <p class="errorMessage">{{ error_message }}</p>
         <form @submit.prevent="handleLogIn">
@@ -36,7 +35,6 @@
           <p>Don't have an account?&nbsp;</p><router-link to="/register">SignUp</router-link>
         </div>
       </div>
-      <div class="col-md-3"></div>
     </div>
   </div>
 </template>
@@ -61,12 +59,15 @@ export default {
 
         this.$router.push(route)
       } catch(e) {
-        if (e.response.status != 200) {
-          this.error_message = 'Incorrect username and/or password!'
-        }
+        // For some reason, axios response has a different structure for web and for ios.
+        // Still to confirm for android
         const dev = await Device.getInfo()
         if (dev.platform == 'ios') {
           if (e.status != 200) {
+            this.error_message = 'Incorrect username and/or password!'
+          }
+        } else if (dev.platform == 'web') {
+          if (e.response.status != 200) {
             this.error_message = 'Incorrect username and/or password!'
           }
         }
@@ -90,4 +91,5 @@ export default {
 .errorMessage {
   color: red
 }
+
 </style>

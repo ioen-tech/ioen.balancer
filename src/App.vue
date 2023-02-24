@@ -1,22 +1,21 @@
 <template>
-  <!-- Image and text -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</a>
-    <a class="navbar-brand" href="#" v-else>Nanogrid</a>
-    <!-- <router-link to="/home" class="navbar-brand" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</router-link> -->
-    <div v-if="!this.$store.getters.isLoggedIn">
-      <router-link to="/login" class="text-white">Login</router-link> |
-      <router-link to="/register" class="text-white">Register</router-link>
-    </div>
+    <!-- Image and text -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</a>
+        <a class="navbar-brand" href="#" v-else>Nanogrid</a>
+        <!-- <router-link to="/home" class="navbar-brand" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</router-link> -->
+        <div v-if="!this.$store.getters.isLoggedIn">
+          <router-link to="/login" class="text-white">Login</router-link> |
+          <router-link to="/register" class="text-white">Register</router-link>
+        </div>
 
-    <div v-if="this.$store.getters.isLoggedIn">
-      <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>
-    </div>
-  </div>
-</nav>
-
-  <router-view />
+        <div v-if="this.$store.getters.isLoggedIn">
+          <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>
+        </div>
+      </div>
+    </nav>
+    <router-view/>
 </template>
 
 <script>
@@ -53,6 +52,7 @@ export default({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100vh;
 }
 
 nav {
@@ -67,4 +67,5 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>

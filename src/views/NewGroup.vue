@@ -4,8 +4,8 @@
       <div class="col-md-3"></div>
       <div class="col-md-6">
         <div class="mt-3">
-          <h3>New Energy Group</h3>
           <br />
+          <h3>New Energy Group</h3>
           <br />
         </div>
         <form role="form" @submit.prevent="handleSubmit" enctype="multipart/form-data">
