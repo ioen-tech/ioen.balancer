@@ -8,6 +8,7 @@
 ###### Setup Database
 -  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.  Please see the [README.md](https://github.com/redgridone/Redgrid.energy.schema#readme) file in this repo for more information.
 -  Do `npm install`
+-  DO `npx prisma migrate dev` if this is the first time you've created the database.
 -  Do `npm run build` to generate prisma artifacts
 
 ###### Setup API Server (Backend)
