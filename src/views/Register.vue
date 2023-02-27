@@ -79,6 +79,16 @@
           </div>
           <div class="mb-3">
             <input
+              v-model="fronius_device_id"
+              type="text"
+              class="form-control"
+              id="fronius_device_id"
+              placeholder="Fronius Device ID"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <input
               v-model="retailer"
               type="text"
               class="form-control"
@@ -130,6 +140,7 @@ export default {
       fronius_password: "",
       fronius_accesskey_id: "",
       fronius_accesskey_value: "",
+      fronius_device_id: "",
       retailer: "",
       meter_hardware: "",
       wallet_address: "",
@@ -137,6 +148,7 @@ export default {
   },
   methods: {
     async handleSubmit() {
+      try {
       const userInfo = {
         username: this.username,
         email: this.email,
@@ -145,6 +157,7 @@ export default {
         fronius_password: this.fronius_password,
         fronius_accesskey_id: this.fronius_accesskey_id,
         fronius_accesskey_value: this.fronius_accesskey_value,
+        fronius_device_id: this.fronius_device_id,
         retailer: this.retailer,
         meter_hardware: this.meter_hardware,
         wallet_address: this.wallet_address,
@@ -153,6 +166,9 @@ export default {
       const res = await axios.post("/users", userInfo);
 
       this.$router.push("/registered");
+      } catch(e) {
+        console.log(e)
+      }
     },
   },
 };

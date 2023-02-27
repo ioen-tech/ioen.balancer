@@ -5,6 +5,7 @@
   <main :class=bodyBackground>
   <div class="container">
     <div class="row">
+      <div class="col-md-3"></div>
       <div class="col-md-6">
         <br>
         <br>
@@ -17,7 +18,7 @@
             AccruedIOEN: <br>
             <button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button> <br>
             MyIOEN: <br>
-            Group Energy: <br>
+            Group Energy: <h2>{{ this.groupEnergy }}</h2><br>
           </div>
           <div class="mb-3">
             {{ this.groupName }}
@@ -27,6 +28,7 @@
           </div>
         </div>
       </div>
+      <div class="col-md-3"></div>
     </div>
   </div>
   </main>
@@ -34,7 +36,7 @@
 
 <script>
 import axios from 'axios';
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { ref } from '@vue/reactivity'
 import nanologo from "@/assets/img/redgrid-logo.gif";
 export default {
@@ -44,7 +46,8 @@ export default {
       date: '',
       time: '',
       groupName: '',
-      bodyBackground: 'balanced',
+      groupEnergy: 0,
+      bodyBackground: 'producing',
       nanologo,
     }
   },
@@ -53,13 +56,33 @@ export default {
     const dates = ref(0)
     const time = ref(0)
     setInterval(() => {
-      dates.value = moment().format('dddd, MMM D YYYY')
-      time.value = moment().format('hh:mm:A')
+      dates.value = moment().tz('Australia/Victoria').format('dddd, MMM D YYYY')
+      time.value = moment().tz('Australia/Victoria').format('hh:mm:A')
     }, 1000)
 
     return {dates, time}
   },
-  async created() {
+  mounted() {
+
+    var self = this
+    this.updateBackground()
+    setInterval(async function() {
+    // Get Group Info
+      self.$store.dispatch('getGroupInfo').then((group) => {
+        self.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
+        self.groupName = group.data.group_name
+        self.$store.commit('setGroup', group.data)
+        self.groupEnergy = group.data.group_energy
+      }).catch((err) => {
+        console.log(err)
+        self.$router.push('/login')
+      })
+
+      await self.updateBackground(this.groupEnergy)
+    }, 5 * 60 * 1000) // 5minute interval (min * sec * millisecond)
+
+  },
+  created() {
     // Get the logged in user
     this.$store.dispatch('getLoggedInUser').then((res) => {
       this.$store.commit('setUser', res.data)
@@ -73,6 +96,8 @@ export default {
       this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
       this.groupName = group.data.group_name
       this.$store.commit('setGroup', group.data)
+      this.groupEnergy = group.data.group_energy
+      this.updateBackground(this.groupEnergy)
     }).catch((err) => {
       console.log(err)
       this.$router.push('/login')
@@ -80,6 +105,15 @@ export default {
 
   },
   methods: {
+    async updateBackground(energy) {
+      if (energy > -500 && this.groupEnergy < 500) {
+        this.bodyBackground = 'balanced'
+      } else if (energy < -500) {
+        this.bodyBackground = 'producing'
+      } else {
+        this.bodyBackground = 'consuming'
+      }
+    }
   }
 }
 </script>

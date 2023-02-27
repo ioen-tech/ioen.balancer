@@ -2,7 +2,7 @@
     <!-- Image and text -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</a>
+        <a class="navbar-brand" href="#" v-if="this.$store.getters.isLoggedIn">{{ this.$store.state.user.username }}</a>
         <a class="navbar-brand" href="#" v-else>Nanogrid</a>
         <!-- <router-link to="/home" class="navbar-brand" v-if="this.$store.getters.isLoggedIn">Hello {{ this.$store.state.user.username }}</router-link> -->
         <div v-if="!this.$store.getters.isLoggedIn">

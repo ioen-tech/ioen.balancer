@@ -4,6 +4,7 @@
     <h1>Login to Nanogrid</h1>
     <br />
     <div class="row">
+      <div class="col-md-3"></div>
       <div class="col-md-6">
         <p class="errorMessage">{{ error_message }}</p>
         <form @submit.prevent="handleLogIn">
@@ -35,6 +36,7 @@
           <p>Don't have an account?&nbsp;</p><router-link to="/register">SignUp</router-link>
         </div>
       </div>
+      <div class="col-md-3"></div>
     </div>
   </div>
 </template>
