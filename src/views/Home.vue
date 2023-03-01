@@ -18,7 +18,7 @@
             AccruedIOEN: <br>
             <button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button> <br>
             MyIOEN: <br>
-            Group Energy: <h2>{{ this.groupEnergy }}</h2><br>
+            Group Energy: {{ this.groupEnergy }}<br>
           </div>
           <div class="mb-3">
             {{ this.groupName }}
@@ -73,12 +73,12 @@ export default {
         self.groupName = group.data.group_name
         self.$store.commit('setGroup', group.data)
         self.groupEnergy = group.data.group_energy
+        self.updateBackground(self.groupEnergy)
       }).catch((err) => {
         console.log(err)
         self.$router.push('/login')
       })
 
-      await self.updateBackground(this.groupEnergy)
     }, 5 * 60 * 1000) // 5minute interval (min * sec * millisecond)
 
   },
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     async updateBackground(energy) {
-      if (energy > -500 && this.groupEnergy < 500) {
+      if (energy > -500 && energy < 500) {
         this.bodyBackground = 'balanced'
       } else if (energy < -500) {
         this.bodyBackground = 'producing'
