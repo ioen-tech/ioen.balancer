@@ -6,6 +6,7 @@
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
+        <p class="errorMessage">{{ error_message }}</p>
         <form role="form" @submit.prevent="handleSubmit">
           <div class="mb-3">
             <input
@@ -50,7 +51,7 @@
           <div class="mb-3">
             <input
               v-model="fronius_password"
-              type="text"
+              type="password"
               class="form-control"
               id="fronius_password"
               placeholder="Fronius Password"
@@ -130,6 +131,8 @@
 <script>
 import { mapMutations } from "vuex";
 import axios from "axios";
+import {Device} from '@capacitor/device'
+
 export default {
   data() {
     return {
@@ -144,6 +147,7 @@ export default {
       retailer: "",
       meter_hardware: "",
       wallet_address: "",
+      error_message:"",
     };
   },
   methods: {
@@ -167,6 +171,16 @@ export default {
 
       this.$router.push("/registered");
       } catch(e) {
+        const dev = await Device.getInfo()
+        if (dev.platform == 'ios') {
+          if (e.status != 200) {
+            this.error_message = e.data.message
+          }
+        } else if (dev.platform == 'web') {
+          if (e.response.status != 200) {
+            this.error_message = e.response.data.message
+          }
+        }
         console.log(e)
       }
     },
@@ -175,4 +189,7 @@ export default {
 </script>
 
 <style scoped>
+.errorMessage {
+  color: red
+}
 </style>

@@ -27,6 +27,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter Groupname"
+                required
               />
               <button
                 type="button"
@@ -93,6 +94,7 @@
 
 <script>
 import axios from "axios";
+import {Device} from '@capacitor/device'
 export default {
   data() {
     return {
@@ -132,12 +134,26 @@ export default {
 
         this.$router.push("/home");
       } catch (err) {
-        if (err.response.status != 200) {
-          this.error_message = err.response.data.message;
-        } else if (err.request) {
-          console.log(err.request);
+        if (!this.selectedFile) {
+          this.error_message = "Please select a logo to upload."
         } else {
-          console.log("unknown error");
+
+          const dev = await Device.getInfo()
+          if (dev.platform == 'ios') {
+            if (err.status != 200) {
+              this.error_message = `Uploaded image is invalid. Image must be less than 5Mb.`
+            } else {
+              this.error_message = `Unknown error occured!`
+              console.log(err);
+            }
+          } else if (dev.platform == 'web') {
+            if (err.response.status != 200) {
+              this.error_message = `Uploaded image is invalid. Image must be less than 5Mb.`
+            } else {
+              this.error_message = `Unknown error occured!`
+              console.log("unknown error");
+            }
+          }
         }
       }
     },
