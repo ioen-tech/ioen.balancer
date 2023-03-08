@@ -26,7 +26,7 @@ import {Device} from '@capacitor/device'
 export default({
   data() {
     return{
-      token: 'default'
+      token: ''
     }
   },
   methods: {
