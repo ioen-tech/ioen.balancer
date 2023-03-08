@@ -1,6 +1,12 @@
 {
-  "appId": "com.nanogrid.app",
+  "appId": "com.redgrid.nanogrid",
   "appName": "nanogrid",
   "webDir": "dist",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
 }

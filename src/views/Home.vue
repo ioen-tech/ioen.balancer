@@ -39,6 +39,9 @@ import axios from 'axios';
 import moment from 'moment-timezone'
 import { ref } from '@vue/reactivity'
 import nanologo from "@/assets/img/redgrid-logo.gif";
+import { PushNotifications } from '@capacitor/push-notifications';
+import {Device} from '@capacitor/device'
+
 export default {
   data() {
     return {
@@ -57,7 +60,7 @@ export default {
     const time = ref(0)
     setInterval(() => {
       dates.value = moment().tz('Australia/Victoria').format('dddd, MMM D YYYY')
-      time.value = moment().tz('Australia/Victoria').format('hh:mm:A')
+      time.value = moment().tz('Australia/Victoria').format('hh:mm:ss A')
     }, 1000)
 
     return {dates, time}
@@ -66,8 +69,11 @@ export default {
 
     var self = this
     this.updateBackground()
+
     setInterval(async function() {
     // Get Group Info
+      console.log("Mounted Group Info")
+
       self.$store.dispatch('getGroupInfo').then((group) => {
         self.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
         self.groupName = group.data.group_name
@@ -76,7 +82,7 @@ export default {
         self.updateBackground(self.groupEnergy)
       }).catch((err) => {
         console.log(err)
-        self.$router.push('/login')
+        // self.$router.push('/login')
       })
 
     }, 5 * 60 * 1000) // 5minute interval (min * sec * millisecond)
@@ -93,6 +99,7 @@ export default {
 
     // Get Group Info
     this.$store.dispatch('getGroupInfo').then((group) => {
+      console.log("Create get Group Info")
       this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
       this.groupName = group.data.group_name
       this.$store.commit('setGroup', group.data)
@@ -100,8 +107,17 @@ export default {
       this.updateBackground(this.groupEnergy)
     }).catch((err) => {
       console.log(err)
-      this.$router.push('/login')
+      // this.$router.push('/login')
     })
+
+    
+    const dev = Device.getInfo()
+    if (dev.platform != 'web') {
+      console.log("Platform is Mobile")
+      this.registerNotifications()
+    } else {
+      console.log("Platform is WEB")
+    }
 
   },
   methods: {
@@ -113,6 +129,45 @@ export default {
       } else {
         this.bodyBackground = 'consuming'
       }
+    },
+    async addListeners() {
+      await PushNotifications.addListener('registration', token => {
+        console.log('Registration token: ', token.value);
+        this.token = token.value
+      });
+
+      await PushNotifications.addListener('registrationError', err => {
+        console.log("Reister notif error")
+        console.error('Registration error: ', err.error);
+      });
+
+      await PushNotifications.addListener('pushNotificationReceived', notification => {
+        console.log('Push notification received: ', notification);
+      });
+
+      await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
+        console.log('Push notification action performed', notification.actionId, notification.inputValue);
+      });
+    },
+
+    async registerNotifications () {
+      this.addListeners()
+      let permStatus = await PushNotifications.checkPermissions();
+
+      if (permStatus.receive === 'prompt') {
+        permStatus = await PushNotifications.requestPermissions();
+      }
+
+      if (permStatus.receive !== 'granted') {
+        throw new Error('User denied permissions!');
+      }
+
+      await PushNotifications.register();
+    },
+
+    async getDeliveredNotifications() {
+      const notificationList = await PushNotifications.getDeliveredNotifications();
+      console.log('delivered notifications', notificationList);
     }
   }
 }

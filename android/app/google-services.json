@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "485529387620",
+    "project_id": "nanogrid-7bfb5",
+    "storage_bucket": "nanogrid-7bfb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485529387620:android:c6dbed7ed65a62a9ea5571",
+        "android_client_info": {
+          "package_name": "com.redgrid.nanogrid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485529387620-tsn2fs2ostig3c7kagkb8uiii470qpp4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoSe1LB20Bgr6aZTuSbCnIC88nCZ3nInA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485529387620-tsn2fs2ostig3c7kagkb8uiii470qpp4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "485529387620-peedl4shsk21bqji1jer56u8uge2kg5i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.redgrid.nanogrid"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

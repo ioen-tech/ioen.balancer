@@ -9,17 +9,26 @@
           <router-link to="/login" class="text-white">Login</router-link> |
           <router-link to="/register" class="text-white">Register</router-link>
         </div>
-
         <div v-if="this.$store.getters.isLoggedIn">
           <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>
         </div>
       </div>
     </nav>
+
     <router-view/>
+    {{token}}
 </template>
 
 <script>
+import { PushNotifications } from '@capacitor/push-notifications';
+import {Device} from '@capacitor/device'
+
 export default({
+  data() {
+    return{
+      token: 'default'
+    }
+  },
   methods: {
     logout() {
       localStorage.setItem('token', null)
@@ -28,7 +37,8 @@ export default({
       this.$store.commit('setGroup', null)
 
       this.$router.push('/login')
-    }
+    },
+
   },
   async created() {
     // Get the logged in user
@@ -40,7 +50,7 @@ export default({
       this.$router.push('/login')
     })
 
-  },
+  }
 })
 </script>
 

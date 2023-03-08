@@ -1,4 +1,4 @@
-package com.redgrid.nanogrid;
+package com.redegrid.nanogrid;
 
 import com.getcapacitor.BridgeActivity;
 
