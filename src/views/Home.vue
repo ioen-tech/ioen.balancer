@@ -16,7 +16,8 @@
           <img :src="nanologo">
           <div>
             AccruedIOEN: <br>
-            <button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button> <br>
+            <router-link to="/redemption"><button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button></router-link><br>
+            
             MyIOEN: <br>
             Group Energy: {{ this.groupEnergy }}<br>
           </div>
