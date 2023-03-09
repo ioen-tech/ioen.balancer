@@ -4,9 +4,9 @@
       <div class="col-md-3"></div>
       <div class="col-md-6">
         <div class="header d-flex justify-content-between">
-          <div class="ioen mt-2">
-            <h1>10000</h1>
-            <p>IOEN Balance</p>
+          <div class="mt-2">
+            <div class="ioen">10,000</div>
+            IOEN Balance
           </div>
           <div class="cash align-self-center">
             <button type="button" class="btn btn-primary">Redeem for Cash</button>
@@ -42,23 +42,35 @@
         <div>
           <h3>Store</h3>
           <div class="d-flex flex-column">
-            <div class="d-flex flex-row justify-content-between mt-2 ">
-                <div><img class="img-thumbnail" src="@/assets/img/MoreInfo.png" style="height: 70px; width: 70px;"></div>
-                <div class="align-self-center p-2 w-50"><p>IOENite Platinum NFT</p></div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex w-100">
+                <div class="p-2 storeImg"><img class="img-thumbnail" src="@/assets/img/MoreInfo.png"></div>
+                <div class="align-self-center w-50 p-2">IOENite Platinum NFT</div>
                 <div class="align-self-center p-2"><h2>100k</h2></div>
-                <div class="align-self-center ml-auto"><button class="btn btn-secondary">Get</button></div>
+              </div>
+              <div>
+                <div class="align-self-center p-2"><button class="btn btn-secondary">Get</button></div>
+              </div>
             </div>
-            <div class="d-flex justify-content-between mt-2">
-                <div><img class="img-thumbnail" src="@/assets/img/WaterDropIconRedLinear.png" style="height: 70px; width: 70px;"></div>
-                <div class="align-self-center p-2 w-50"><p>Macedon IOENite Platinum NFT</p></div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex w-100">
+                <div class="p-2 storeImg"><img class="img-thumbnail" src="@/assets/img/WaterDropIconRedLinear.png"></div>
+                <div class="align-self-center w-50 p-2">Macedon IOENite Platinum NFT</div>
                 <div class="align-self-center p-2"><h2>50k</h2></div>
-                <div class="align-self-center ml-auto"><button class="btn btn-secondary">Get</button></div>
+              </div>
+              <div>
+                <div class="align-self-center p-2"><button class="btn btn-secondary">Get</button></div>
+              </div>
             </div>
-            <div class="d-flex justify-content-between mt-2">
-              <div><img class="img-thumbnail" src="@/assets/img/SunIconRedLinear.png" style="height: 70px; width: 70px;"></div>
-              <div class="align-self-center p-2 w-50"><p>Macedon FCC Membership Discount</p></div>
-              <div class="align-self-center p-2"><h2>25k</h2></div>
-              <div class="align-self-center ml-auto"><button class="btn btn-secondary">Get</button></div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex w-100">
+                <div class="p-2 storeImg"><img class="img-thumbnail" src="@/assets/img/SunIconRedLinear.png"></div>
+                <div class="align-self-center w-50 p-2">Macedon FCC Membership Discount</div>
+                <div class="align-self-center p-2"><h2>25k</h2></div>
+              </div>
+              <div>
+                <div class="align-self-center p-2"><button class="btn btn-secondary">Get</button></div>
+              </div>
             </div>
           </div>
         </div>
@@ -114,4 +126,15 @@ export default {
   height: 100px;
   width: 100px;
 }
+
+.storeImg {
+  height: 60px;
+  width: 60px;
+}
+
+.ioen {
+  font-size: 40px;
+  font-weight: bold;
+}
+
 </style>
