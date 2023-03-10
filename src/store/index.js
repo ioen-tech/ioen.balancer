@@ -47,6 +47,24 @@ export default createStore({
           Authorization: 'Bearer ' + token
         }
       })
+    },
+
+    async getMyCollections({commit}) {
+      const token = localStorage.getItem('token')
+      return await axios.get('/users/my_collections', {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+    },
+
+    async getStores({commit}) {
+      const token = localStorage.getItem('token')
+      return await axios.get('/users/stores', {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
     }
   },
   modules: {},

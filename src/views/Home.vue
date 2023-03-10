@@ -18,7 +18,7 @@
             AccruedIOEN: <br>
             <router-link to="/redemption"><button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button></router-link><br>
             
-            MyIOEN: <br>
+            MyIOEN: {{ this.$store.state.user.rewards_points }}<br>
             Group Energy: {{ this.groupEnergy }}<br>
           </div>
           <div class="mb-3">
@@ -73,7 +73,6 @@ export default {
 
     setInterval(async function() {
     // Get Group Info
-      console.log("Mounted Group Info")
 
       self.$store.dispatch('getGroupInfo').then((group) => {
         self.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
@@ -100,7 +99,6 @@ export default {
 
     // Get Group Info
     this.$store.dispatch('getGroupInfo').then((group) => {
-      console.log("Create get Group Info")
       this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
       this.groupName = group.data.group_name
       this.$store.commit('setGroup', group.data)

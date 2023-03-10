@@ -5,7 +5,7 @@
       <div class="col-md-6">
         <div class="header d-flex justify-content-between">
           <div class="mt-2">
-            <div class="ioen">10,000</div>
+            <div class="ioen">{{ this.$store.state.user.rewards_points }}</div>
             IOEN Balance
           </div>
           <div class="cash align-self-center">
@@ -15,26 +15,9 @@
         <hr>
         <div>
           <h3>My Collections</h3>
-          <div class="collections d-flex justify-content-between">
-            <div>
-              <img class="img-thumbnail" src="@/assets/img/House.png">
-            </div>
-            <div>
-              <img class="img-thumbnail" src="@/assets/img/ElectricCarRed.png">
-            </div>
-            <div>
-              <img class="img-thumbnail" src="@/assets/img/RedGridLogo.png">
-            </div>
-          </div>
-          <div class="collections d-flex justify-content-between mt-4">
-            <div>
-              <img class="img-thumbnail" src="@/assets/img/LightningFill.png">
-            </div>
-            <div>
-              <img class="img-thumbnail" src="@/assets/img/redgrid-logo.gif">
-            </div>
-            <div>
-              <img class="img-thumbnail" src="@/assets/img/TownhouseIconRedLinear.png">
+          <div class="d-flex justify-content-center flex-wrap">
+            <div v-for="collection in collections" class="collections d-flex p-2">
+              <img :src="require(`../assets/img/${collection.items}`)" class="img-thumbnail" >
             </div>
           </div>
         </div>
@@ -42,37 +25,19 @@
         <div>
           <h3>Store</h3>
           <div class="d-flex flex-column">
-            <div class="d-flex justify-content-between align-items-center">
+
+            <div v-for="store in stores" class="d-flex justify-content-between">
               <div class="d-flex w-100">
-                <div class="p-2 storeImg"><img class="img-thumbnail" src="@/assets/img/MoreInfo.png"></div>
-                <div class="align-self-center w-50 p-2">IOENite Platinum NFT</div>
-                <div class="align-self-center p-2"><h2>100k</h2></div>
+                <div class="align-self-center p-2 storeImg"><img class="img-thumbnail" :src="require(`../assets/img/${store.items}`)"></div>
+                <div class="align-self-center w-50 p-2">{{ store.description }}</div>
+                <div class="align-self-center p-2 mt-2"><h2>{{ $filters.abbrFormat(store.item_price) }}</h2></div>
               </div>
               <div>
-                <div class="align-self-center p-2"><button class="btn btn-secondary">Get</button></div>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex w-100">
-                <div class="p-2 storeImg"><img class="img-thumbnail" src="@/assets/img/WaterDropIconRedLinear.png"></div>
-                <div class="align-self-center w-50 p-2">Macedon IOENite Platinum NFT</div>
-                <div class="align-self-center p-2"><h2>50k</h2></div>
-              </div>
-              <div>
-                <div class="align-self-center p-2"><button class="btn btn-secondary">Get</button></div>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex w-100">
-                <div class="p-2 storeImg"><img class="img-thumbnail" src="@/assets/img/SunIconRedLinear.png"></div>
-                <div class="align-self-center w-50 p-2">Macedon FCC Membership Discount</div>
-                <div class="align-self-center p-2"><h2>25k</h2></div>
-              </div>
-              <div>
-                <div class="align-self-center p-2"><button class="btn btn-secondary">Get</button></div>
+                <div class="align-self-center p-2 mt-1"><button class="btn btn-secondary" @click="buy(store.store_id, store.description)">Get</button></div>
               </div>
             </div>
           </div>
+          <p class="errorMessage">{{ error_message }}</p>
         </div>
       </div>
       <div class="col-md-3"></div>
@@ -83,13 +48,16 @@
 <script>
 import axios from 'axios';
 import moment from 'moment-timezone'
-import nanologo from "@/assets/img/redgrid-logo.gif";
 import {Device} from '@capacitor/device'
 
 export default {
   data() {
     return {
-      nanologo,
+      collections: [],
+      stores: [],
+      number: 110000,
+      ioenBalance: 0,
+      error_message: '',
     }
   },
   name: 'Redemption',
@@ -97,26 +65,65 @@ export default {
     // Get the logged in user
     this.$store.dispatch('getLoggedInUser').then((res) => {
       this.$store.commit('setUser', res.data)
+      this.ioenBalance = res.data.user
     }).catch((err) => {
       console.log(`err ${err}`)
       this.$router.push('/login')
     })
 
-    // Get Group Info
-    this.$store.dispatch('getGroupInfo').then((group) => {
-      console.log("Create get Group Info")
-      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
-      this.groupName = group.data.group_name
-      this.$store.commit('setGroup', group.data)
-      this.groupEnergy = group.data.group_energy
+    // Get Collections Info
+    this.$store.dispatch('getMyCollections').then((collections) => {
+      this.collections = collections.data.slice()
     }).catch((err) => {
       console.log(err)
       // this.$router.push('/login')
     })
 
+    // get Store Info
+    this.$store.dispatch('getStores').then((stores) => {
+      this.stores = stores.data.slice()
+    }).catch((err) => {
+      console.log(err)
+    })
+
 
   },
   methods: {
+    async buy(id, desc) {
+
+      // alert(`${this.$store.state.user.username}:${this.$store.state.user.user_id} bought this: ${id}:${price}`)
+      const token = localStorage.getItem('token')
+
+      try {
+        const res = await axios.post('/users/buy', {
+          "user_id": this.$store.state.user.user_id,
+          "store_id": id
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        })
+        alert(`You have succesfully buy the ${desc}`)
+        this.$router.go()
+      } catch(e) {
+        // For some reason, axios response has a different structure for web and for ios.
+        // Still to confirm for android
+        const dev = await Device.getInfo()
+        if (dev.platform == 'ios') {
+          if (e.status != 200) {
+            this.error_message = 'Incorrect username and/or password!'
+          }
+        } else if (dev.platform == 'web') {
+          if (e.response.status != 200) {
+            console.log("status is not 2000")
+            this.error_message = e.response.data.message
+          }
+        }
+        console.log(e)
+      }
+      
+    }
   }
 }
 </script>
@@ -136,5 +143,7 @@ export default {
   font-size: 40px;
   font-weight: bold;
 }
-
+.errorMessage {
+  color: red
+}
 </style>
