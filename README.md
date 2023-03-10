@@ -4,6 +4,12 @@
 ### Pre Requisite
 - [x] Install mysql server on your local machine
 - [x] Install IORedis() server on your local machine.
+> 
+To verify if ioredis is running on your local machine type the following command:
+````
+redis-cli
+````
+	
 
 ### Setup Database
 -  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.
@@ -16,13 +22,25 @@ DATABASE_URL="mysql://<user>:<password>@localhost:<port#>/<dbname>"
 > `npx prisma migrate reset`
 - If you have just created the database, run the following command to create the database schema:
 > `npx prisma migrate dev`
-- To import the temporary NFT information into your database, run the following command:
-> `mysql -u username -p database_name < NFTs.sql
+- To import the temporary NFT information into your database, run the following command in the root folder of Redgrid.energy.schema and make sure you are pointing to the `next` branch:
+> `mysql -u username -p database_name < scripts/NFTs.sql`
 - Now Generate the prisma artifacts to be use by the backend API, run the following command:
 > `npm run build`
 
 ### Setup API Server (Backend)
--  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to fillout the needed fields in the [.env](https://github.com/redgridone/Redgrid.energy.api/blob/main/README.md) file.
+-  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to point to the `next` branch.  Copy the `.env-sample` file to `.env` and fillout the needed information.
+
+````bash
+JWT_SECRET="MyS3cr3tK3Y"
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+FRONIUS_URL=
+FRONIUS_PVSYSTEMS_URL=
+FRONIUS_PVSYSTEMS_AGGDATA=
+
+PRODUCTION=false
+````
 -  If you have set all of the .env properties, run the following command:
 > `npm install`
 - Run the backend API in the background:
