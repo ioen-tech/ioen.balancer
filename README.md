@@ -6,15 +6,27 @@
 - [x] Install IORedis() server on your local machine.
 
 ###### Setup Database
--  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.  Please see the [README.md](https://github.com/redgridone/Redgrid.energy.schema#readme) file in this repo for more information.
+-  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.
+set the DATABASE_URL property in `.env` file.
+````bash
+DATABASE_URL="mysql://<user>:<password>@localhost:<port#>/<dbname>"
+````
 -  Do `npm install`
--  DO `npx prisma migrate dev` if this is the first time you've created the database.
--  Do `npm run build` to generate prisma artifacts
+- If you want to reset and delete the info in the database, run the following command:
+> `npx prisma migrate reset`
+- If you have just created the database, run the following command to create the database schema:
+> `npx prisma migrate dev`
+- To import the temporary NFT information into your database, run the following command:
+> `mysql -u username -p database_name < NFTs.sql
+- Now Generate the prisma artifacts to be use by the backend API, run the following command:
+> `npm run build`
 
 ###### Setup API Server (Backend)
--  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to fillout the needed fields in the .env file.  Please see the [README.md](https://github.com/redgridone/Redgrid.energy.api#readme) in this repo for more information.
--  Do `npm install`
--  Do `npm run dev`
+-  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to fillout the needed fields in the [.env](https://github.com/redgridone/Redgrid.energy.api/blob/main/README.md) file.
+-  If you have set all of the .env properties, run the following command:
+> `npm install`
+- Run the backend API in the background:
+> `npm run dev`
 
 ###### How to build and run via web or mobile app (Frontend)
 
