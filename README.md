@@ -1,11 +1,11 @@
 
 ## Developer Documentation
 
-###### Pre Requisite
+### Pre Requisite
 - [x] Install mysql server on your local machine
 - [x] Install IORedis() server on your local machine.
 
-###### Setup Database
+### Setup Database
 -  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.
 set the DATABASE_URL property in `.env` file.
 ````bash
@@ -21,14 +21,14 @@ DATABASE_URL="mysql://<user>:<password>@localhost:<port#>/<dbname>"
 - Now Generate the prisma artifacts to be use by the backend API, run the following command:
 > `npm run build`
 
-###### Setup API Server (Backend)
+### Setup API Server (Backend)
 -  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to fillout the needed fields in the [.env](https://github.com/redgridone/Redgrid.energy.api/blob/main/README.md) file.
 -  If you have set all of the .env properties, run the following command:
 > `npm install`
 - Run the backend API in the background:
 > `npm run dev`
 
-###### How to build and run via web or mobile app (Frontend)
+### How to build and run via web or mobile app (Frontend)
 
 The first time you clone this repository, run (within this directory)
 ````bash
