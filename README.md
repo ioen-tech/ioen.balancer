@@ -12,8 +12,8 @@ redis-cli
 	
 
 ### Setup Database
--  Clone https://github.com/redgridone/Redgrid.energy.schema and make sure to modify the DATABASE_URL property in the .env file to point to your local mysql server.
-set the DATABASE_URL property in `.env` file.
+-  Clone [Redgrid.energy.schema](https://github.com/redgridone/Redgrid.energy.schema) and make sure to point to the `next` branch.  Copy the `.env-sample` to `.env` file and set the correct DATABASE_URL property.
+
 ````bash
 DATABASE_URL="mysql://<user>:<password>@localhost:<port#>/<dbname>"
 ````
@@ -28,7 +28,7 @@ DATABASE_URL="mysql://<user>:<password>@localhost:<port#>/<dbname>"
 > `npm run build`
 
 ### Setup API Server (Backend)
--  Clone https://github.com/redgridone/Redgrid.energy.api and make sure to point to the `next` branch.  Copy the `.env-sample` file to `.env` and fillout the needed information.
+-  Clone [Redgrid.energy.api](https://github.com/redgridone/Redgrid.energy.api) and make sure to point to the `next` branch.  Copy the `.env-sample` file to `.env` and fillout the needed information.
 
 ````bash
 JWT_SECRET="MyS3cr3tK3Y"
@@ -48,7 +48,7 @@ PRODUCTION=false
 
 ### How to build and run via web or mobile app (Frontend)
 
-The first time you clone this repository, run (within this directory)
+The first time you clone this repository, point to the `next` branch and run (within this directory)
 ````bash
 npm install
 ````
