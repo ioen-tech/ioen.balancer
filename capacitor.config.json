@@ -8,5 +8,11 @@
     "PushNotifications": {
       "presentationOptions": ["badge", "sound", "alert"]
     }
+  },
+
+  "server": {
+    "url": "http://192.168.2.194:8080",
+    "cleartext": true
+
   }
 }

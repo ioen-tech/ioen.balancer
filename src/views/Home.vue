@@ -15,10 +15,11 @@
           <br>
           <img :src="nanologo">
           <div>
+            <!-- <button class="btn btn-danger" @click="sendNotification()">Send</button><br> -->
             AccruedIOEN: <br>
             <router-link to="/redemption"><button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button></router-link><br>
             
-            MyIOEN: {{ this.$store.state.user.rewards_points }}<br>
+            MyIOEN: {{ this.rewards_points }}<br>
             Group Energy: {{ this.groupEnergy }}<br>
           </div>
           <div class="mb-3">
@@ -53,6 +54,8 @@ export default {
       groupEnergy: 0,
       bodyBackground: 'producing',
       nanologo,
+      fcmToken: null,
+      rewards_points: 0,
     }
   },
   name: 'Home',
@@ -92,6 +95,7 @@ export default {
     // Get the logged in user
     this.$store.dispatch('getLoggedInUser').then((res) => {
       this.$store.commit('setUser', res.data)
+      this.rewards_points = res.data.rewards_points
     }).catch((err) => {
       console.log(`err ${err}`)
       this.$router.push('/login')
@@ -118,6 +122,12 @@ export default {
       console.log("Platform is WEB")
     }
 
+    this.fcmToken = localStorage.getItem('fcmToken')
+    console.log('fcmtoken storage: ', this.fcmToken)
+    if (this.fcmToken != null) {
+      this.setPushNotificationToken()
+    }
+
   },
   methods: {
     async updateBackground(energy) {
@@ -131,21 +141,12 @@ export default {
     },
     async addListeners() {
       await PushNotifications.addListener('registration', token => {
-        console.log('Registration token: ', token.value);
-        this.token = token.value
+        console.log('FCM Token', token.value)
+        localStorage.setItem('fcmToken', token.value)
       });
 
       await PushNotifications.addListener('registrationError', err => {
-        console.log("Reister notif error")
         console.error('Registration error: ', err.error);
-      });
-
-      await PushNotifications.addListener('pushNotificationReceived', notification => {
-        console.log('Push notification received: ', notification);
-      });
-
-      await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-        console.log('Push notification action performed', notification.actionId, notification.inputValue);
       });
     },
 
@@ -163,11 +164,48 @@ export default {
 
       await PushNotifications.register();
     },
+    async setPushNotificationToken() {
+      const token = localStorage.getItem('token')
+      console.log('refreshToken: ', token)
+      console.log('fcmTOken: ', this.fcmToken)
+      try {
+        
+        const res = await axios.post('/users/set_fcm_token', {
+          "fcm_token": this.fcmToken
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        })
+        console.log("set push notif token")
+      } catch(e) {
+        // For some reason, axios response has a different structure for web and for ios.
+        // Still to confirm for android
+        const dev = await Device.getInfo()
+        if (dev.platform == 'ios') {
+          if (e.status != 200) {
+            this.error_message = e.data.message
+          }
+        } else if (dev.platform == 'web') {
+          if (e.response.status != 200) {
+            this.error_message = e.response.data.message
+          }
+        }
+        console.log(e)
+      }
+    },
+    // async sendNotification() {
+    //   const token = localStorage.getItem('token')
 
-    async getDeliveredNotifications() {
-      const notificationList = await PushNotifications.getDeliveredNotifications();
-      console.log('delivered notifications', notificationList);
-    }
+    //   const r = await axios.get('/users/send_notif',
+    //   {
+    //     headers: {
+    //       Authorization: 'Bearer ' + token
+    //     }
+    //   })
+
+    // }
   }
 }
 </script>
