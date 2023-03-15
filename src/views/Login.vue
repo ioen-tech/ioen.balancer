@@ -72,6 +72,10 @@ export default {
           if (e.response.status != 200) {
             this.error_message = 'Incorrect username and/or password!'
           }
+        } else {
+          if (e.response.status != 200) {
+            this.error_message = 'Incorrect username and/or password!'
+          }
         }
         console.log(e)
       }

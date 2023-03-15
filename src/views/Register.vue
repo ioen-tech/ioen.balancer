@@ -180,6 +180,10 @@ export default {
           if (e.response.status != 200) {
             this.error_message = e.response.data.message
           }
+        } else {
+          if (e.response.status != 200) {
+            this.error_message = e.response.data.message
+          }
         }
         console.log(e)
       }

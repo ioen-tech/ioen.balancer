@@ -16,16 +16,17 @@
         <div>
           <h3>My Collections</h3>
           <div class="d-flex justify-content-center flex-wrap">
-            <div v-for="collection in collections" class="collections d-flex p-2">
-              <img :src="require(`../assets/img/${collection.items}`)" class="img-thumbnail" >
-            </div>
+            <div v-if="!collections.length">No collections</div>
+              <div v-for="collection in collections" class="collections d-flex p-2">
+                <img :src="require(`../assets/img/${collection.items}`)" class="img-thumbnail" >
+              </div>
           </div>
         </div>
         <hr>
         <div>
           <h3>Store</h3>
           <div class="d-flex flex-column">
-
+            <div v-if="!stores.length">There are no items to display</div>
             <div v-for="store in stores" class="d-flex justify-content-between">
               <div class="d-flex w-100">
                 <div class="align-self-center p-2 storeImg"><img class="img-thumbnail" :src="require(`../assets/img/${store.items}`)"></div>
@@ -35,7 +36,7 @@
               <div>
                 <div class="align-self-center p-2 mt-1"><button class="btn btn-secondary" @click="buy(store.store_id, store.description)">Get</button></div>
               </div>
-            </div>
+              </div>
           </div>
           <p class="errorMessage">{{ error_message }}</p>
         </div>
@@ -117,6 +118,11 @@ export default {
         } else if (dev.platform == 'web') {
           if (e.response.status != 200) {
             console.log("status is not 2000")
+            this.error_message = e.response.data.message
+          }
+        } else {
+          if (e.response.status != 200) {
+            console.log("Status is not 200 android")
             this.error_message = e.response.data.message
           }
         }

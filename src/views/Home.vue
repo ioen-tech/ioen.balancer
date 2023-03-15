@@ -12,8 +12,7 @@
         <div id="clock">
           <h2 class="date">{{ dates }}</h2>
           <h1 class="time">{{ time }}</h1>
-          <br>
-          <img :src="nanologo">
+          <img :src="nanologo" style="height: 120px; width: 120px;">
           <div>
             <!-- <button class="btn btn-danger" @click="sendNotification()">Send</button><br> -->
             AccruedIOEN: <br>
@@ -64,7 +63,8 @@ export default {
     const time = ref(0)
     setInterval(() => {
       dates.value = moment().tz('Australia/Victoria').format('dddd, MMM D YYYY')
-      time.value = moment().tz('Australia/Victoria').format('hh:mm:ss A')
+      time.value = moment().tz('Australia/Victoria').format('hh:mm:A')
+      // time.value = moment().tz('Australia/Victoria').format('hh:mm:ss A')
     }, 1000)
 
     return {dates, time}
@@ -116,14 +116,11 @@ export default {
     
     const dev = Device.getInfo()
     if (dev.platform != 'web') {
-      console.log("Platform is Mobile")
       this.registerNotifications()
     } else {
-      console.log("Platform is WEB")
     }
 
     this.fcmToken = localStorage.getItem('fcmToken')
-    console.log('fcmtoken storage: ', this.fcmToken)
     if (this.fcmToken != null) {
       this.setPushNotificationToken()
     }
@@ -146,7 +143,8 @@ export default {
       });
 
       await PushNotifications.addListener('registrationError', err => {
-        console.error('Registration error: ', err.error);
+        alert('registration error!')
+        console.log('Registration error: ', err.error);
       });
     },
 
@@ -159,6 +157,8 @@ export default {
       }
 
       if (permStatus.receive !== 'granted') {
+        console.log('User denied permissionsss!')
+        alert("permision denied!")
         throw new Error('User denied permissions!');
       }
 
@@ -166,8 +166,6 @@ export default {
     },
     async setPushNotificationToken() {
       const token = localStorage.getItem('token')
-      console.log('refreshToken: ', token)
-      console.log('fcmTOken: ', this.fcmToken)
       try {
         
         const res = await axios.post('/users/set_fcm_token', {
@@ -188,6 +186,10 @@ export default {
             this.error_message = e.data.message
           }
         } else if (dev.platform == 'web') {
+          if (e.response.status != 200) {
+            this.error_message = e.response.data.message
+          }
+        } else {
           if (e.response.status != 200) {
             this.error_message = e.response.data.message
           }
@@ -248,7 +250,7 @@ export default {
 }
 #clock .time {
   letter-spacing: 0.05em;
-  font-size: 80px;
+  font-size: 70px;
   padding: 0;
 }
 #clock .date {
