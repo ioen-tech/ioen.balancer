@@ -9,11 +9,6 @@ import Redemption from "../views/Redemption.vue"
 
 const routes = [
   {
-    path: "/",
-    name: "login",
-    component: Login,
-  },
-  {
     path: "/login",
     name: "login",
     component: Login,

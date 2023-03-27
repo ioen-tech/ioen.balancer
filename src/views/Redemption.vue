@@ -72,6 +72,18 @@ export default {
       this.$router.push('/login')
     })
 
+    // Get Group Info
+    this.$store.dispatch('getGroupInfo').then((group) => {
+      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
+      this.groupName = group.data.group_name
+      this.$store.commit('setGroup', group.data)
+      this.groupEnergy = group.data.group_energy
+      this.updateBackground(this.groupEnergy)
+    }).catch((err) => {
+      console.log(err)
+      this.$router.push('/groupmgmt')
+    })
+    
     // Get Collections Info
     this.$store.dispatch('getMyCollections').then((collections) => {
       this.collections = collections.data.slice()

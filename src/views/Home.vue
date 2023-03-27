@@ -73,6 +73,7 @@ export default {
 
     var self = this
     this.updateBackground()
+    console.log("HOME mounted()")
 
     setInterval(async function() {
     // Get Group Info
@@ -93,6 +94,7 @@ export default {
   },
   created() {
     // Get the logged in user
+    console.log("HOME created()")
     this.$store.dispatch('getLoggedInUser').then((res) => {
       this.$store.commit('setUser', res.data)
       this.rewards_points = res.data.rewards_points
@@ -110,7 +112,7 @@ export default {
       this.updateBackground(this.groupEnergy)
     }).catch((err) => {
       console.log(err)
-      // this.$router.push('/login')
+      this.$router.push('/groupmgmt')
     })
 
     
