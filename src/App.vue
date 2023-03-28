@@ -4,8 +4,6 @@
       <div class="container-fluid">
         <div v-if="this.$store.getters.isLoggedIn">
           <a class="navbar-brand">{{ this.$store.state.user.username }}</a>
-          <router-link to="/home" class="text-white">Home</router-link> | 
-          <router-link to="/redemption" class="text-white">Redemption</router-link>
         </div>
         <div v-else>
           <a class="navbar-brand" href="#">Nanogrid</a>
@@ -22,16 +20,27 @@
     </nav>
 
     <router-view/>
-    {{token}}
+
+    <div v-if="this.$store.getters.isLoggedIn">
+    <RingBottomNavigation :options="options" v-model="selected" />
+    </div>
 </template>
 
 <script>
 import { PushNotifications } from '@capacitor/push-notifications';
 import {Device} from '@capacitor/device'
+import { RingBottomNavigation, WindowsBottomNavigation } from "bottom-navigation-vue"
+import "bottom-navigation-vue/dist/style.css"
 
 export default({
   data() {
     return{
+      selected: 1,
+      options: [
+        { id: 1, icon: 'fa-solid fa-house', title: 'Dashboard', path:'/home' },
+        // { id: 2, icon: 'fa-solid fa-user-secret', title: 'Game', path:'/game' },
+        { id: 3, icon: 'fa-solid fa-gear', title: 'Redemption', path: '/redemption' }
+      ],
       token: ''
     }
   },

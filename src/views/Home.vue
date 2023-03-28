@@ -9,15 +9,26 @@
       <div class="col-md-6">
         <br>
         <br>
-        <div id="clock">
+        <div id="clock" class="d-flex justify-content-around flex-row">
+          <div>
+            <h3>$150</h3>
+            <p>Credit</p>
+          </div>
+          <div>
+            <h3>100000</h3>
+            <p>I O E N</p>
+          </div>
+        </div>
+        <ChartComponent/>
+        <!-- <div id="clock">
           <h2 class="date">{{ dates }}</h2>
           <h1 class="time">{{ time }}</h1>
           <img :src="nanologo" style="height: 120px; width: 120px;">
           <div>
-            <!-- <button class="btn btn-danger" @click="sendNotification()">Send</button><br> -->
             AccruedIOEN: <br>
             <router-link to="/redemption"><button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button></router-link><br>
-            
+            <i class='fa-solid fa-house'></i>
+
             MyIOEN: {{ this.rewards_points }}<br>
             Group Energy: {{ this.groupEnergy }}<br>
           </div>
@@ -27,7 +38,7 @@
           <div class="mb-1">
             <img :src="imgSrc" class="img-thumbnail" alt="logo" style="height: 100px; width: 100px;">
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -41,7 +52,8 @@ import moment from 'moment-timezone'
 import { ref } from '@vue/reactivity'
 import nanologo from "@/assets/img/redgrid-logo.gif";
 import { PushNotifications } from '@capacitor/push-notifications';
-import {Device} from '@capacitor/device'
+import {Device} from '@capacitor/device';
+import ChartComponent from '../components/ChartComponent.vue';
 
 export default {
   data() {
@@ -58,6 +70,9 @@ export default {
     }
   },
   name: 'Home',
+  components: {
+    ChartComponent
+  },
   setup() {
     const dates = ref(0)
     const time = ref(0)

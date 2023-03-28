@@ -3,13 +3,14 @@
     <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
-        <div class="header d-flex justify-content-between">
-          <div class="mt-2">
-            <div class="ioen">{{ this.$store.state.user.rewards_points }}</div>
-            IOEN Balance
+        <div class="header d-flex justify-content-around">
+          <div class="mt-2 d-flex flex-column">
+            <img src="https://robohash.org/mail@ashallendesign.co.uk" class="img-thumbnail" alt="Avatar" style="width: 100px; height: 100px;">
+            <h5>Avatar</h5>
           </div>
-          <div class="cash align-self-center">
-            <button type="button" class="btn btn-primary">Redeem for Cash</button>
+          <div class="mt-2 align-self-center">
+            <div class="ioen">{{ this.$store.state.user.rewards_points }}</div>
+            <h3>I O E N</h3>
           </div>
         </div>
         <hr>
@@ -74,16 +75,13 @@ export default {
 
     // Get Group Info
     this.$store.dispatch('getGroupInfo').then((group) => {
-      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
-      this.groupName = group.data.group_name
       this.$store.commit('setGroup', group.data)
       this.groupEnergy = group.data.group_energy
-      this.updateBackground(this.groupEnergy)
     }).catch((err) => {
       console.log(err)
       this.$router.push('/groupmgmt')
     })
-    
+
     // Get Collections Info
     this.$store.dispatch('getMyCollections').then((collections) => {
       this.collections = collections.data.slice()
