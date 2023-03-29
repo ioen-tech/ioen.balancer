@@ -93,11 +93,11 @@ export default {
     setInterval(async function() {
 
       // Get the updated user info
-      this.$store.dispatch('getLoggedInUser').then((res) => {
+      self.$store.dispatch('getLoggedInUser').then((res) => {
         self.rewards_points = res.data.rewards_points
       }).catch((err) => {
         console.log(`err ${err}`)
-        this.$router.push('/login')
+        self.$router.push('/login')
       })
       // Get Group Info
       self.$store.dispatch('getGroupInfo').then((group) => {

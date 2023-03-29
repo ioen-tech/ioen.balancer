@@ -20,19 +20,19 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
         datasets: [
           { 
             label: 'Grid',
             backgroundColor: '#ff00ff',
             borderColor: '#ff00ff',
-            data: [30, 20, 12, 5, 10, 50, 35, 10, 25, 30, 28, 70],
+            data: [30, 20, 12, 5, 10, 50],
           },
           { 
             label: 'Produced',
             backgroundColor: '#0000ff',
             borderColor: '#0000ff',
-            data: [5, 40, 32, 25, 80, 30, 25, 15, 18, 20, 38, 40]
+            data: [5, 40, 32, 25, 60, 30]
           }
         ]
       },
