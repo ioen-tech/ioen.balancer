@@ -15,6 +15,10 @@
             <p>Credit</p>
           </div>
           <div>
+            <h3>{{ this.groupEnergy }}</h3>
+            <p>Group Energy</p>
+          </div>
+          <div>
             <h3>{{ this.rewards_points }}</h3>
             <p>I O E N</p>
           </div>

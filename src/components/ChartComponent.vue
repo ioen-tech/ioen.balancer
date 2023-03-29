@@ -23,15 +23,15 @@ export default {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
         datasets: [
           { 
-            label: 'Grid',
-            backgroundColor: '#ff00ff',
-            borderColor: '#ff00ff',
+            label: 'Neighbour Traded',
+            backgroundColor: '#107869',
+            borderColor: '#107869',
             data: [30, 20, 12, 5, 10, 50],
           },
           { 
-            label: 'Produced',
-            backgroundColor: '#0000ff',
-            borderColor: '#0000ff',
+            label: 'Retailer Traded',
+            backgroundColor: '#4169E1',
+            borderColor: '#4169E1',
             data: [5, 40, 32, 25, 60, 30]
           }
         ]
@@ -45,7 +45,7 @@ export default {
           },
           title: {
             display: top,
-            text: 'Retailers Graph',
+            text: 'My Energy',
             color: 'white',
             font: {
               size: 24,
