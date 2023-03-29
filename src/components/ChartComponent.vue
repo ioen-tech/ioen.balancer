@@ -57,10 +57,15 @@ export default {
         responsive: true,
         scales: {
           y: {
-            ticks: {color: 'white', beginAtZero: true}
+            ticks: {
+              color: 'white',
+              callback: function(value, index, ticks) {
+                return value + ' kwH';
+              }
+            }
           },
           x: {
-            ticks: {color: 'white', beginAtZero: true}
+            ticks: {color: 'white'}
           }
         }
       }

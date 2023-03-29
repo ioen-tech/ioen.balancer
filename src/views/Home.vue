@@ -15,7 +15,7 @@
             <p>Credit</p>
           </div>
           <div>
-            <h3>100000</h3>
+            <h3>{{ this.rewards_points }}</h3>
             <p>I O E N</p>
           </div>
         </div>
@@ -91,8 +91,15 @@ export default {
     console.log("HOME mounted()")
 
     setInterval(async function() {
-    // Get Group Info
 
+      // Get the updated user info
+      this.$store.dispatch('getLoggedInUser').then((res) => {
+        self.rewards_points = res.data.rewards_points
+      }).catch((err) => {
+        console.log(`err ${err}`)
+        this.$router.push('/login')
+      })
+      // Get Group Info
       self.$store.dispatch('getGroupInfo').then((group) => {
         self.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
         self.groupName = group.data.group_name
@@ -109,7 +116,6 @@ export default {
   },
   created() {
     // Get the logged in user
-    console.log("HOME created()")
     this.$store.dispatch('getLoggedInUser').then((res) => {
       this.$store.commit('setUser', res.data)
       this.rewards_points = res.data.rewards_points
