@@ -30,15 +30,12 @@ export default({
     }
   },
   async created() {
-    // Get the logged in user
     this.$store.dispatch('getLoggedInUser').then((res) => {
       this.$store.commit('setUser', res.data)
-      this.$router.push('/home')
+      user = res.data
     }).catch((err) => {
-      console.log(`err ${err}`)
       this.$router.push('/login')
     })
-
   }
 })
 </script>

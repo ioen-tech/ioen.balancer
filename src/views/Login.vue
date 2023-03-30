@@ -47,6 +47,14 @@ import {Device} from '@capacitor/device'
 
 export default {
   name: 'Login',
+  created() {
+    console.log("login created")
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (user) {
+      // Redirect to home page
+      this.$router.push('/home')
+    }
+  },
   methods: {
     async handleLogIn() {
       try {
@@ -57,7 +65,6 @@ export default {
 
         const {token, route} = res.data
         this.$store.commit('setToken', token)
-        localStorage.setItem('token', token)
 
         this.$router.push(route)
       } catch(e) {

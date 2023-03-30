@@ -132,6 +132,14 @@ export default {
           },
         });
 
+        // Store Group Info into localstore.
+        this.$store.dispatch('getGroupInfo').then((group) => {
+          this.$store.commit('setGroup', group.data)
+        }).catch((err) => {
+          console.log(err)
+          this.$router.push('/groupmgmt')
+        })
+
         this.$router.push("/home");
       } catch (err) {
         if (!this.selectedFile) {

@@ -25,6 +25,8 @@ export default {
   methods: {
     logout() {
       localStorage.setItem('token', null)
+      localStorage.setItem('user', null)
+      localStorage.setItem('group', null)
       this.$store.commit('setToken', null)
       this.$store.commit('setUser', null)
       this.$store.commit('setGroup', null)

@@ -9,7 +9,7 @@
             <h5>Avatar</h5>
           </div>
           <div class="mt-2 align-self-center">
-            <div class="ioen">{{ this.$store.state.user.rewards_points }}</div>
+            <div class="ioen">{{ ioenBalance }}</div>
             <h3>I O E N</h3>
           </div>
         </div>
@@ -65,22 +65,10 @@ export default {
   name: 'Redemption',
   created() {
     // Get the logged in user
-    this.$store.dispatch('getLoggedInUser').then((res) => {
-      this.$store.commit('setUser', res.data)
-      this.ioenBalance = res.data.user
-    }).catch((err) => {
-      console.log(`err ${err}`)
-      this.$router.push('/login')
-    })
+    const user = JSON.parse(localStorage.getItem('user'))
+    const group = JSON.parse(localStorage.getItem('group'))
 
-    // Get Group Info
-    this.$store.dispatch('getGroupInfo').then((group) => {
-      this.$store.commit('setGroup', group.data)
-      this.groupEnergy = group.data.group_energy
-    }).catch((err) => {
-      console.log(err)
-      this.$router.push('/groupmgmt')
-    })
+    this.ioenBalance = user.rewards_points
 
     // Get Collections Info
     this.$store.dispatch('getMyCollections').then((collections) => {

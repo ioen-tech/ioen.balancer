@@ -9,7 +9,6 @@ export default createStore({
   },
   getters: {
     isLoggedIn(state) {
-      // Checks if user is logged in or not
       return state.user
     },
     isGroupAdmin(state) {
@@ -22,12 +21,15 @@ export default createStore({
   mutations: {
     setUser(state, user) {
       state.user = user
+      localStorage.setItem('user', JSON.stringify(user))
     },
     setToken(state, token) {
       state.token = token
+      localStorage.setItem('token', token)
     },
     setGroup(state, group) {
       state.group = group
+      localStorage.setItem('group', JSON.stringify(group))
     }
   },
   actions: {

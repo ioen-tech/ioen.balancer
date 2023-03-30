@@ -89,15 +89,15 @@ export default {
     return {dates, time}
   },
   mounted() {
-
+    
     var self = this
     this.updateBackground()
-    console.log("HOME mounted()")
 
     setInterval(async function() {
 
       // Get the updated user info
       self.$store.dispatch('getLoggedInUser').then((res) => {
+        self.$store.commit('setUser', res.data)
         self.rewards_points = res.data.rewards_points
       }).catch((err) => {
         console.log(`err ${err}`)
@@ -105,8 +105,6 @@ export default {
       })
       // Get Group Info
       self.$store.dispatch('getGroupInfo').then((group) => {
-        self.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
-        self.groupName = group.data.group_name
         self.$store.commit('setGroup', group.data)
         self.groupEnergy = group.data.group_energy
         self.updateBackground(self.groupEnergy)
@@ -120,27 +118,41 @@ export default {
   },
   created() {
     // Get the logged in user
-    this.$store.dispatch('getLoggedInUser').then((res) => {
-      this.$store.commit('setUser', res.data)
-      this.rewards_points = res.data.rewards_points
-    }).catch((err) => {
-      console.log(`err ${err}`)
-      this.$router.push('/login')
-    })
-
-    // Get Group Info
-    this.$store.dispatch('getGroupInfo').then((group) => {
-      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
-      this.groupName = group.data.group_name
-      this.$store.commit('setGroup', group.data)
-      this.groupEnergy = group.data.group_energy
+    let user = JSON.parse(localStorage.getItem('user'))
+    if (!user) {
+      this.$store.dispatch('getLoggedInUser').then((res) => {
+        this.$store.commit('setUser', res.data)
+        user = res.data
+      }).catch((err) => {
+        this.$router.push('/login')
+      })
+    }
+    let group = JSON.parse(localStorage.getItem('group'))
+    if (!group) {
+      // Store Group Info into localstore.
+      this.$store.dispatch('getGroupInfo').then((group) => {
+        this.$store.commit('setGroup', group.data)
+        group = group.data
+        // Set the local variables.
+        this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
+        this.groupName = group.group_name
+        this.groupEnergy = group.group_energy
+      console.log("this.groupEnergy1: ", this.groupEnergy)
+        this.updateBackground(this.groupEnergy)
+      }).catch((err) => {
+        console.log(err)
+        this.$router.push('/groupmgmt')
+      })
+    } else {
+      // Set the local variables.
+      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
+      this.groupName = group.group_name
+      this.groupEnergy = group.group_energy
+      console.log("this.groupEnergy2: ", this.groupEnergy)
       this.updateBackground(this.groupEnergy)
-    }).catch((err) => {
-      console.log(err)
-      this.$router.push('/groupmgmt')
-    })
+    }
 
-    
+    // Send a notification request only for mobile app.
     const dev = Device.getInfo()
     if (dev.platform != 'web') {
       this.registerNotifications()
