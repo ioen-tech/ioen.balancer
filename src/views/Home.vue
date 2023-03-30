@@ -9,10 +9,14 @@
       <div class="col-md-6">
         <br>
         <br>
-        <div id="clock" class="d-flex justify-content-around flex-row">
+        <div id="clock" class="d-flex justify-content-around flex-row align-items-center">
           <div>
             <h3>$150</h3>
             <p>Credit</p>
+          </div>
+          <div>
+            <img :src="imgSrc" class="img-thumbnail" alt="logo" style="height: 50px; width: 50px;">
+            <p>{{  this.groupName  }}</p>
           </div>
           <div>
             <h3>{{ this.groupEnergy }}</h3>
@@ -137,7 +141,6 @@ export default {
         this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
         this.groupName = group.group_name
         this.groupEnergy = group.group_energy
-      console.log("this.groupEnergy1: ", this.groupEnergy)
         this.updateBackground(this.groupEnergy)
       }).catch((err) => {
         console.log(err)
@@ -148,9 +151,9 @@ export default {
       this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
       this.groupName = group.group_name
       this.groupEnergy = group.group_energy
-      console.log("this.groupEnergy2: ", this.groupEnergy)
       this.updateBackground(this.groupEnergy)
     }
+
 
     // Send a notification request only for mobile app.
     const dev = Device.getInfo()
