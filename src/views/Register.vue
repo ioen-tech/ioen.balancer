@@ -61,7 +61,7 @@
           <div class="mb-3">
             <input
               v-model="fronius_accesskey_id"
-              type="text"
+              type="password"
               class="form-control"
               id="fronius_accesskey_id"
               placeholder="Fronius AccessKey ID"
@@ -71,7 +71,7 @@
           <div class="mb-3">
             <input
               v-model="fronius_accesskey_value"
-              type="text"
+              type="password"
               class="form-control"
               id="fronius_accesskey_value"
               placeholder="Fronius AccessKey Value"
@@ -81,7 +81,7 @@
           <div class="mb-3">
             <input
               v-model="fronius_device_id"
-              type="text"
+              type="password"
               class="form-control"
               id="fronius_device_id"
               placeholder="Fronius Device ID"

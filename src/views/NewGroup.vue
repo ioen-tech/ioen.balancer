@@ -20,6 +20,7 @@
               style="display: none"
             />
           </div>
+          <div v-if="fileName">Filename: {{ fileName }}</div>
           <div class="mb-3">
             <div class="input-group">
               <input
@@ -104,6 +105,7 @@ export default {
       reward_start_balance: "",
       error_message: "",
       selectedFile: null,
+      fileName: ""
     };
   },
   created() {
@@ -167,6 +169,7 @@ export default {
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0];
+      this.fileName = this.selectedFile.name
     },
   },
 };

@@ -9,6 +9,8 @@
       <div class="col-md-6">
         <br>
         <br>
+
+        <!-- <form role="form" @submit.prevent="handleSubmit" enctype="multipart/form-data"> -->
         <div id="clock" class="d-flex justify-content-around flex-row align-items-center">
           <div>
             <h3>$150</h3>
@@ -27,26 +29,8 @@
             <p>I O E N</p>
           </div>
         </div>
+        <!-- </form> -->
         <ChartComponent/>
-        <!-- <div id="clock">
-          <h2 class="date">{{ dates }}</h2>
-          <h1 class="time">{{ time }}</h1>
-          <img :src="nanologo" style="height: 120px; width: 120px;">
-          <div>
-            AccruedIOEN: <br>
-            <router-link to="/redemption"><button type="button" class="btn btn-secondary" style="width: 30%">REDEEM </button></router-link><br>
-            <i class='fa-solid fa-house'></i>
-
-            MyIOEN: {{ this.rewards_points }}<br>
-            Group Energy: {{ this.groupEnergy }}<br>
-          </div>
-          <div class="mb-3">
-            {{ this.groupName }}
-          </div>
-          <div class="mb-1">
-            <img :src="imgSrc" class="img-thumbnail" alt="logo" style="height: 100px; width: 100px;">
-          </div>
-        </div> -->
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -103,18 +87,12 @@ export default {
       self.$store.dispatch('getLoggedInUser').then((res) => {
         self.$store.commit('setUser', res.data)
         self.rewards_points = res.data.rewards_points
-      }).catch((err) => {
-        console.log(`err ${err}`)
-        self.$router.push('/login')
       })
       // Get Group Info
       self.$store.dispatch('getGroupInfo').then((group) => {
         self.$store.commit('setGroup', group.data)
         self.groupEnergy = group.data.group_energy
         self.updateBackground(self.groupEnergy)
-      }).catch((err) => {
-        console.log(err)
-        // self.$router.push('/login')
       })
 
     }, 5 * 60 * 1000) // 5minute interval (min * sec * millisecond)
