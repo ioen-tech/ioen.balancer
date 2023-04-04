@@ -11,26 +11,22 @@
         <br>
 
         <!-- <form role="form" @submit.prevent="handleSubmit" enctype="multipart/form-data"> -->
-        <div id="clock" class="d-flex justify-content-around flex-row align-items-center">
+        <div id="info" class="d-flex justify-content-around flex-row align-items-center">
           <div>
             <h3>$150</h3>
             <p>Credit</p>
           </div>
           <div>
-            <img :src="imgSrc" class="img-thumbnail" alt="logo" style="height: 50px; width: 50px;">
-            <p>{{  this.groupName  }}</p>
-          </div>
-          <div>
-            <h3>{{ this.groupEnergy }}</h3>
+            <h3>{{ groupEnergy }}</h3>
             <p>Group Energy</p>
           </div>
           <div>
-            <h3>{{ this.rewards_points }}</h3>
+            <h3>{{ rewards_points }}</h3>
             <p>I O E N</p>
           </div>
         </div>
         <!-- </form> -->
-        <ChartComponent/>
+        <ChartComponent v-if="isLoading" :dataSets="dataSets" :labels="labels"/>
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -41,11 +37,13 @@
 <script>
 import axios from 'axios';
 import moment from 'moment-timezone'
-import { ref } from '@vue/reactivity'
 import nanologo from "@/assets/img/redgrid-logo.gif";
+import ChartComponent from '../components/ChartComponent.vue';
+
+import { Capacitor } from "@capacitor/core"
+import { ref } from '@vue/reactivity'
 import { PushNotifications } from '@capacitor/push-notifications';
 import {Device} from '@capacitor/device';
-import ChartComponent from '../components/ChartComponent.vue';
 
 export default {
   data() {
@@ -59,29 +57,25 @@ export default {
       nanologo,
       fcmToken: null,
       rewards_points: 0,
+      dataSets: [],
+      labels: [],
+      isLoading: false
     }
   },
   name: 'Home',
   components: {
     ChartComponent
   },
-  setup() {
-    const dates = ref(0)
-    const time = ref(0)
-    setInterval(() => {
-      dates.value = moment().tz('Australia/Victoria').format('dddd, MMM D YYYY')
-      time.value = moment().tz('Australia/Victoria').format('hh:mm:A')
-      // time.value = moment().tz('Australia/Victoria').format('hh:mm:ss A')
-    }, 1000)
-
-    return {dates, time}
-  },
   mounted() {
     
+    this.getChartData()
+
     var self = this
-    this.updateBackground()
+    // this.updateBackground()
 
     setInterval(async function() {
+
+      self.getChartData()
 
       // Get the updated user info
       self.$store.dispatch('getLoggedInUser').then((res) => {
@@ -99,16 +93,23 @@ export default {
 
   },
   created() {
-    // Get the logged in user
+    // Get the logged in user from localStorage.
+    // If null, call the backend API to get the user info.
     let user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       this.$store.dispatch('getLoggedInUser').then((res) => {
         this.$store.commit('setUser', res.data)
         user = res.data
+        this.rewards_points = user.rewards_points
       }).catch((err) => {
         this.$router.push('/login')
       })
+    } else {
+      this.rewards_points = user.rewards_points
     }
+
+    // Get the group info from localStorage.
+    // if null, call the backend API to get the group info.
     let group = JSON.parse(localStorage.getItem('group'))
     if (!group) {
       // Store Group Info into localstore.
@@ -119,7 +120,6 @@ export default {
         this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
         this.groupName = group.group_name
         this.groupEnergy = group.group_energy
-        this.updateBackground(this.groupEnergy)
       }).catch((err) => {
         console.log(err)
         this.$router.push('/groupmgmt')
@@ -129,13 +129,18 @@ export default {
       this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
       this.groupName = group.group_name
       this.groupEnergy = group.group_energy
-      this.updateBackground(this.groupEnergy)
     }
 
+    // Get the background info from localStorage.
+    const localBg = localStorage.getItem('background')
+    if (localBg) {
+      this.bodyBackground = localBg
+    }
 
+    // web does not support PushNotification plugins.  This checking will remove the warning in the logs.
+    const isPushNotificationsAvailable = Capacitor.isPluginAvailable('PushNotifications');
     // Send a notification request only for mobile app.
-    const dev = Device.getInfo()
-    if (dev.platform != 'web') {
+    if (isPushNotificationsAvailable) {
       this.registerNotifications()
     } else {
     }
@@ -147,7 +152,21 @@ export default {
 
   },
   methods: {
+    async getChartData() {
+      this.$store.dispatch('getEnergyLogs').then((logs) => {
+      const energyLogs = logs.data
+
+      // Formulate the labels and the datasets for rendering the Line Chart.
+      this.labels = energyLogs.map(el => moment.unix(el.event_time).format('h:mm a'))
+      this.dataSets = energyLogs.map(el => el.energy)
+
+      // this.labels = [...Array(288)].map(_=> Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1))
+      // this.dataSets = [...Array(288)].map(_=> Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1))
+      this.isLoading = true
+      })
+    },
     async updateBackground(energy) {
+      // For now the balanced range is within -500 to 500w.
       if (energy > -500 && energy < 500) {
         this.bodyBackground = 'balanced'
       } else if (energy < -500) {
@@ -155,6 +174,7 @@ export default {
       } else {
         this.bodyBackground = 'consuming'
       }
+      localStorage.setItem('background', this.bodyBackground)
     },
     async addListeners() {
       await PushNotifications.addListener('registration', token => {
@@ -263,21 +283,21 @@ export default {
   height: 100vh; 
 }
 
-#clock {
+#info {
   font-family: 'Share Tech Mono', monospace;
   color: #ffffff;
   text-shadow: 0 0 20px #0aafe6, 0 0 20px rgba(10, 175, 230, 0);
 }
-#clock .time {
+#info .time {
   letter-spacing: 0.05em;
   font-size: 70px;
   padding: 0;
 }
-#clock .date {
+#info .date {
   letter-spacing: 0.1em;
   font-size: 24px;
 }
-#clock .text {
+#info .text {
   letter-spacing: 0.1em;
   font-size: 12px;
   padding: 20px 0 0;

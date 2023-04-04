@@ -2,7 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <div v-if="this.$store.getters.isLoggedIn">
-        <a class="navbar-brand">{{ this.$store.state.user.username }}</a>
+        <img :src="imgSrc" width="30" height="30" class="d-inline-block align-top" alt=""> &nbsp;
+        <a class="navbar-brand"> {{ this.$store.state.user.username }}</a>
       </div>
       <div v-else>
         <a class="navbar-brand" href="#">Nanogrid</a>
@@ -20,8 +21,20 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Nav',
+  data() {
+    return {
+      imgSrc: ''
+    }
+  },
+  created() {
+    // Store Group Info into localstore.
+    this.$store.dispatch('getGroupInfo').then((group) => {
+      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
+    })
+  },
   methods: {
     logout() {
       localStorage.setItem('token', null)

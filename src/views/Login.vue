@@ -48,7 +48,6 @@ import {Device} from '@capacitor/device'
 export default {
   name: 'Login',
   created() {
-    console.log("login created")
     const user = JSON.parse(localStorage.getItem('user'))
     if (user) {
       // Redirect to home page

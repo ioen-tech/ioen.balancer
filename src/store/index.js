@@ -67,6 +67,14 @@ export default createStore({
           Authorization: 'Bearer ' + token
         }
       })
+    },
+    async getEnergyLogs({commit}) {
+      const token = localStorage.getItem('token')
+      return await axios.get('/users/energy_logs', {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
     }
   },
   modules: {},
