@@ -157,7 +157,11 @@ export default {
       const energyLogs = logs.data
 
       // Formulate the labels and the datasets for rendering the Line Chart.
-      this.labels = energyLogs.map(el => moment.unix(el.event_time).format('h:mm a'))
+      this.labels = energyLogs.map(el => {
+        const hour = moment.unix(el.event_time).hour()
+        const minute = moment.unix(el.event_time).minute()
+        return (((hour) + (minute/60)).toFixed(10))
+      })
       this.dataSets = energyLogs.map(el => el.energy)
 
       // this.labels = [...Array(288)].map(_=> Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1))

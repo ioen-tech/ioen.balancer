@@ -1,42 +1,33 @@
 <template>
   <div v-if="dataSets">
-    <Line 
+    <Scatter
       id="retailer-chart"
       :options="chartOptions"
       :data="chartData"
       :height="250"
+      :plugins="gridBackground"
     />
   </div>
 </template>
 
 <script>
-import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
+import { Line, Scatter } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, Filler } from 'chart.js'
 import moment from 'moment-timezone'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, Filler )
 
 export default {
   name: 'ChartComponent',
   props: ['dataSets', 'labels'],
   components: {
-    Line
+    Scatter
   },
-  // data() {
-
-    // const start = moment().hour(12).minute(0)
-    // let labels = new Array(288)
-    // let data = new Array(288)
-    // labels[0] = start.format('hh:mm a')
-    // for (let i=1; i<288; i++) {
-    //   labels[i] = start.add(5, 'minutes').format('hh:mm a')
-    //   data[i] = Math.ceil(Math.random() * 1200) * (Math.round(Math.random()) ? 1 : -1)
-    // }
-    // return {
-    //   chartData: {},
-    //   chartOptions: {}
-    // }
-  // },
+  data() {
+    return {
+      gridBackground:[]
+    }
+  },
   computed: {
     chartData() {
       return {
@@ -56,7 +47,33 @@ export default {
     },
     chartOptions() {
       return {
-        plugins: {
+        plugins:
+        {
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                const arr = (tooltipItem.label + "").split(".")
+                const min = Math.round(((parseInt(arr[1], 10)/10000000000) * 60))
+                let fmin = min
+                if ((min+"").length == 1) {
+                  fmin = '0' + min
+                }
+                if (arr[0] > 11) {
+                  const t = arr[0] % 12
+                  if (t == 0) {
+                    return arr[0] + ':' + fmin + ' pm'
+                  } else {
+                    return t + ':' + fmin + ' pm'
+                  }
+                } else {
+                  return arr[0] + ':' + fmin + ' am'
+                }
+              },
+              title: function(tooltipItem) {
+                return 'Group Energy'
+              }
+            }
+          },
           legend: {
             labels: {
               color: 'white',
@@ -75,8 +92,11 @@ export default {
         },
         responsive: true,
         maintainAspectRatio: false,
+        showLine: true,
         scales: {
           y: {
+            min: -3500,
+            max: 3500,
             display: true,
             title: {
               display: true,
@@ -85,34 +105,50 @@ export default {
             },
             ticks: {
               color: 'white',
-              stepSize: 500
+              stepSize: 500,
+              font: {
+                size: 10
+              },
             },
             grid: {
               color :(context) => {
                 if(context.tick.value > 400 && context.tick.value < 600) {
-                  return '#1891b4'
+                  return 'rgba(189,155,25,0.3)'
                 } else if (context.tick.value === 0) {
                   return '#ceb180'
                 } else if (context.tick.value < -400 && context.tick.value > -600) {
-                  return 'green'
+                  return 'rgba(189,155,25,0.3)'
+                } else {
+                  return 'rgba(108,122,137,0.3)'
                 }
               }
             },
             beginAtZero: true,
           },
           x: {
+            min: 0,
+            max: 24,
             grid: {
               display: true,
               drawBorder: true
             },
             ticks: {
+              stepSize: 6,
               color: 'white',
               font: {
                 size: 10
               },
               callback: function(value, index, ticks) {
-                if (index%24 == 0) {
-                  return (this.getLabelForValue(value))
+                if (value == 18) {
+                  return '6pm'
+                } else if (value == 0) {
+                  return '12am'
+                } else if (value == 12) {
+                  return value + 'pm'
+                } else if (value ==24) {
+                  return '12am'
+                } else {
+                  return value + 'am'
                 }
               }
             }
@@ -123,6 +159,25 @@ export default {
   },
   async created() {
 
+    const config = {
+      id: 'gridBackGround',
+      beforeDraw:(chart, args, options) => {
+        const {ctx, chartArea: {top, right, bottom, left, width, height}, scales: {x, y} } = chart
+        ctx.save()
+
+        bgColors(3500, 500, 'rgba(11,127,171,0.3)')
+        bgColors(500, -500, 'rgba(189,155,25,0.3)')
+        bgColors(-500, -3500, 'rgba(27,163,156,0.3)')
+
+        // background
+        function bgColors(bracketLow, bracketHigh, color) {
+          ctx.fillStyle = color
+          ctx.fillRect(left, y.getPixelForValue(bracketHigh), width, y.getPixelForValue(bracketLow)-y.getPixelForValue(bracketHigh))
+          ctx.restore()
+        }
+      }
+    }
+    this.gridBackground.push(config)
     // this.chartData = {
     //   labels: this.labels,
     //   datasets: [
