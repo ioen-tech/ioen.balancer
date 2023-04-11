@@ -158,8 +158,8 @@ export default {
 
       // Formulate the labels and the datasets for rendering the Line Chart.
       this.labels = energyLogs.map(el => {
-        const hour = moment.unix(el.event_time).hour()
-        const minute = moment.unix(el.event_time).minute()
+        const hour = moment.unix(el.event_time).tz('Australia/Victoria').hour()
+        const minute = moment.unix(el.event_time).tz('Australia/Victoria').minute()
         return (((hour) + (minute/60)).toFixed(10))
       })
       this.dataSets = energyLogs.map(el => el.energy)
