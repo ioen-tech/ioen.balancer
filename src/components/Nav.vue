@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #041419;">
     <div class="container-fluid">
       <div v-if="this.$store.getters.isLoggedIn">
         <img :src="imgSrc" width="30" height="30" class="d-inline-block align-top" alt=""> &nbsp;
@@ -14,7 +14,7 @@
         <router-link to="/register" class="text-white">Register</router-link>
       </div>
       <div v-if="this.$store.getters.isLoggedIn">
-        <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>
+        <button type="button" class="btn btn-outline-secondary" @click="logout" style="background-color: #041419;">Logout</button>
       </div>
     </div>
   </nav>

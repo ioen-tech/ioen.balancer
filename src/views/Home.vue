@@ -1,7 +1,4 @@
 .<template>
-  <!-- <h3 v-if="this.$store.getters.isGroupAdmin">I'm a group Addmin</h3>
-  <h3 v-else>I'm a normal Person</h3>
-  <h3 v-if="!this.$store.getters.isLoggedIn">You are Not Logged In</h3> -->
   <main :class=bodyBackground>
   <div class="container">
     <div class="row">
@@ -12,15 +9,16 @@
 
         <!-- <form role="form" @submit.prevent="handleSubmit" enctype="multipart/form-data"> -->
         <div id="info" class="d-flex justify-content-around flex-row align-items-center">
-          <div>
+          <div class="homeInfo">
             <h3>$150</h3>
             <p>Credit</p>
+            <!-- <mdicon name="view-dashboard" style="color: red;"/> -->
           </div>
-          <div>
+          <div class="homeInfo">
             <h3>{{ groupEnergy }}</h3>
             <p>Group Energy</p>
           </div>
-          <div>
+          <div class="homeInfo">
             <h3>{{ rewards_points }}</h3>
             <p>I O E N</p>
           </div>

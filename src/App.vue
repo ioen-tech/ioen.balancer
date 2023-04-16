@@ -3,30 +3,23 @@
     <router-view/>
 
     <div v-if="this.$store.getters.isLoggedIn">
-    <RingBottomNavigation :options="options" v-model="selected" />
+      <BottomNav />
     </div>
 </template>
 
 <script>
 import { PushNotifications } from '@capacitor/push-notifications';
 import {Device} from '@capacitor/device'
-import { RingBottomNavigation, WindowsBottomNavigation } from "bottom-navigation-vue"
-import "bottom-navigation-vue/dist/style.css"
 import Nav from "./components/Nav.vue"
+import BottomNav from "./components/BottomNav.vue"
 
 export default({
   components: {
-    Nav
+    Nav,
+    BottomNav,
   },
   data() {
     return{
-      selected: 1,
-      options: [
-        { id: 1, icon: 'fa-solid fa-house', title: 'Dashboard', path:'/home' },
-        // { id: 2, icon: 'fa-solid fa-user-secret', title: 'Game', path:'/game' },
-        { id: 3, icon: 'fa-solid fa-gear', title: 'Redemption', path: '/redemption' }
-      ],
-      token: ''
     }
   },
   async created() {
