@@ -90,44 +90,26 @@ export default {
     }, 5 * 60 * 1000) // 5minute interval (min * sec * millisecond)
 
   },
-  created() {
-    // Get the logged in user from localStorage.
-    // If null, call the backend API to get the user info.
-    let user = JSON.parse(localStorage.getItem('user'))
-    if (!user) {
-      this.$store.dispatch('getLoggedInUser').then((res) => {
-        this.$store.commit('setUser', res.data)
-        user = res.data
-        this.rewards_points = user.rewards_points
-      }).catch((err) => {
-        this.$router.push('/login')
-      })
-    } else {
-      this.rewards_points = user.rewards_points
-    }
+  async created() {
+    // Get User info from API
+    this.$store.dispatch('getLoggedInUser').then((res) => {
+      this.$store.commit('setUser', res.data)
+      this.rewards_points = res.data.rewards_points
+    }).catch((err) => {
+      this.$router.push('/login')
+    })
 
-    // Get the group info from localStorage.
-    // if null, call the backend API to get the group info.
-    let group = JSON.parse(localStorage.getItem('group'))
-    if (!group) {
-      // Store Group Info into localstore.
-      this.$store.dispatch('getGroupInfo').then((group) => {
-        this.$store.commit('setGroup', group.data)
-        group = group.data
-        // Set the local variables.
-        this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
-        this.groupName = group.group_name
-        this.groupEnergy = group.group_energy
-      }).catch((err) => {
-        console.log(err)
-        this.$router.push('/groupmgmt')
-      })
-    } else {
+    // Get the group info from API
+    this.$store.dispatch('getGroupInfo').then((group) => {
+      this.$store.commit('setGroup', group.data)
       // Set the local variables.
-      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.group_logo
-      this.groupName = group.group_name
-      this.groupEnergy = group.group_energy
-    }
+      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
+      this.groupName = group.data.group_name
+      this.groupEnergy = group.data.group_energy
+    }).catch((err) => {
+      console.log(err)
+      this.$router.push('/groupmgmt')
+    })
 
     // Get the background info from localStorage.
     const localBg = localStorage.getItem('background')
