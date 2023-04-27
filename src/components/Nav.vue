@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #041419;">
     <div class="container-fluid">
       <div v-if="this.$store.getters.isLoggedIn">
-        <img :src="imgSrc" width="30" height="30" class="d-inline-block align-top" alt=""> &nbsp;
+        <img v-if="this.$store.getters.isGroupMember" :src="this.$store.getters.getGroupLogo" width="30" height="30" class="d-inline-block align-top" alt=""> &nbsp;
         <a class="navbar-brand"> {{ this.$store.state.user.username }}</a>
       </div>
       <div v-else>
@@ -24,22 +24,22 @@
 import axios from 'axios'
 export default {
   name: 'Nav',
-  data() {
-    return {
-      imgSrc: ''
+  mounted() {
+    const group = this.getGroupInfo()
+    if (group) {
+      this.$store.commit('setGroup', group)
     }
   },
   created() {
-    // Store Group Info into localstore.
-    this.$store.dispatch('getGroupInfo').then((group) => {
-      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
-    })
   },
   methods: {
+    getGroupInfo() {
+      return JSON.parse(localStorage.getItem('groupInfo'))
+    },
     logout() {
       localStorage.setItem('token', null)
-      localStorage.setItem('user', null)
-      localStorage.setItem('group', null)
+      localStorage.setItem('userInfo', null)
+      localStorage.setItem('groupInfo', null)
       this.$store.commit('setToken', null)
       this.$store.commit('setUser', null)
       this.$store.commit('setGroup', null)

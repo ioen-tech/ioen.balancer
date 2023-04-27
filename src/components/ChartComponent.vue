@@ -165,9 +165,9 @@ export default {
         const {ctx, chartArea: {top, right, bottom, left, width, height}, scales: {x, y} } = chart
         ctx.save()
 
-        bgColors(3500, 500, 'rgba(11,127,171,0.3)')
-        bgColors(500, -500, 'rgba(189,155,25,0.3)')
-        bgColors(-500, -3500, 'rgba(27,163,156,0.3)')
+        bgColors(3500, 500, 'rgba(11,127,171,0.5)')
+        bgColors(500, -500, 'rgba(189,155,25,0.5)')
+        bgColors(-500, -3500, 'rgba(27,163,156,0.5)')
 
         // background
         function bgColors(bracketLow, bracketHigh, color) {

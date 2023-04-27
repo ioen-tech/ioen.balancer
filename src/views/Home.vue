@@ -15,11 +15,11 @@
             <!-- <mdicon name="view-dashboard" style="color: red;"/> -->
           </div>
           <div class="homeInfo">
-            <h3>{{ groupEnergy }}</h3>
+            <h3 v-if="groupInfo">{{ groupInfo.group_energy }}</h3>
             <p>Group Energy</p>
           </div>
           <div class="homeInfo">
-            <h3>{{ rewards_points }}</h3>
+            <h3 v-if="userInfo">{{ userInfo.rewards_points }}</h3>
             <p>I O E N</p>
           </div>
         </div>
@@ -49,15 +49,14 @@ export default {
       imgSrc: '',
       date: '',
       time: '',
-      groupName: '',
-      groupEnergy: 0,
       bodyBackground: 'producing',
       nanologo,
       fcmToken: null,
-      rewards_points: 0,
       dataSets: [],
       labels: [],
-      isLoading: false
+      isLoading: false,
+      userInfo: {},
+      groupInfo: {}
     }
   },
   name: 'Home',
@@ -69,47 +68,30 @@ export default {
     this.getChartData()
 
     var self = this
-    // this.updateBackground()
+    this.getUserInfo()
+    this.getGroupInfo()
 
-    setInterval(async function() {
+    // Update Chatdata, group and userinfo if socket data
+    // is receive from the socket server.
+    this.$socket.on(this.groupInfo.group_name, (energy) => {
 
-      self.getChartData()
-
+      this.getChartData()
       // Get the updated user info
-      self.$store.dispatch('getLoggedInUser').then((res) => {
-        self.$store.commit('setUser', res.data)
-        self.rewards_points = res.data.rewards_points
+      this.$store.dispatch('getLoggedInUser').then((res) => {
+        this.$store.commit('setUser', res.data)
+        this.userInfo = res.data
       })
       // Get Group Info
-      self.$store.dispatch('getGroupInfo').then((group) => {
-        self.$store.commit('setGroup', group.data)
-        self.groupEnergy = group.data.group_energy
-        self.updateBackground(self.groupEnergy)
+      this.$store.dispatch('getGroupInfo').then((group) => {
+        this.$store.commit('setGroup', group.data)
+        this.groupInfo = group.data
+        this.updateBackground(self.groupInfo.group_energy)
       })
 
-    }, 5 * 60 * 1000) // 5minute interval (min * sec * millisecond)
+    })
 
   },
   async created() {
-    // Get User info from API
-    this.$store.dispatch('getLoggedInUser').then((res) => {
-      this.$store.commit('setUser', res.data)
-      this.rewards_points = res.data.rewards_points
-    }).catch((err) => {
-      this.$router.push('/login')
-    })
-
-    // Get the group info from API
-    this.$store.dispatch('getGroupInfo').then((group) => {
-      this.$store.commit('setGroup', group.data)
-      // Set the local variables.
-      this.imgSrc = axios.defaults.baseURL + 'logos/' + group.data.group_logo
-      this.groupName = group.data.group_name
-      this.groupEnergy = group.data.group_energy
-    }).catch((err) => {
-      console.log(err)
-      this.$router.push('/groupmgmt')
-    })
 
     // Get the background info from localStorage.
     const localBg = localStorage.getItem('background')
@@ -132,6 +114,14 @@ export default {
 
   },
   methods: {
+    getUserInfo() {
+      console.log("Home: User: ", JSON.parse(localStorage.getItem("userInfo")))
+      return this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    },
+    getGroupInfo() {
+      console.log("Home: Group: ", JSON.parse(localStorage.getItem("groupInfo")))
+      return this.groupInfo = JSON.parse(localStorage.getItem('groupInfo'))
+    },
     async getChartData() {
       this.$store.dispatch('getEnergyLogs').then((logs) => {
       const energyLogs = logs.data

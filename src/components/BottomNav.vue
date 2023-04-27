@@ -1,13 +1,13 @@
 <template>
   <div class="mobile-nav">
     <div class="bloc-icon w-100">
-      <router-link to="/home"  class="icon w-100">
-        <mdicon name="monitor-dashboard" size="35px"/>
+      <router-link to="/home"  class="icon w-100 p-3">
+        <mdicon name="monitor-dashboard" size="35px" />
       </router-link>
       
     </div>
     <div class="bloc-icon w-100">
-      <router-link to="/redemption" class="icon w-100">
+      <router-link to="/redemption" class="icon w-100 p-3">
         <mdicon name="bitcoin"  size="35px"/>
       </router-link>
       

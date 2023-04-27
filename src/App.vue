@@ -1,8 +1,8 @@
 <template>
-    <Nav/>
+    <Nav />
     <router-view/>
 
-    <div v-if="this.$store.getters.isLoggedIn">
+    <div v-if="this.$store.getters.isLoggedIn && this.$store.getters.isGroupMember">
       <BottomNav />
     </div>
 </template>
@@ -20,15 +20,37 @@ export default({
   },
   data() {
     return{
+      userInfo: null,
+      username: '',
+      isUserLoggedIn: false,
+      connection: null
     }
   },
-  async created() {
-    this.$store.dispatch('getLoggedInUser').then((res) => {
-      this.$store.commit('setUser', res.data)
-      user = res.data
-    }).catch((err) => {
+  mounted() {
+    if (this.userInfo) {
+      this.username = this.userInfo.username
+    }
+  },
+  created() {
+    this.getUserInfo()
+    if (!this.userInfo) {
       this.$router.push('/login')
-    })
+    }
+  },
+  methods: {
+    sendMessage(message) {
+      this.connection.send(message)
+    },
+    getUserInfo () {
+      return this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    },
+    getLoggedInUser() {
+      if (this.userInfo) {
+        this.isUserLoggedIn = true
+        return true
+      }
+      return false
+    }
   }
 })
 </script>

@@ -65,10 +65,12 @@ export default {
   name: 'Redemption',
   created() {
     // Get the logged in user
-    const user = JSON.parse(localStorage.getItem('user'))
-    const group = JSON.parse(localStorage.getItem('group'))
+    const user = JSON.parse(localStorage.getItem('userInfo'))
+    const group = JSON.parse(localStorage.getItem('groupInfo'))
 
-    this.ioenBalance = user.rewards_points
+    if (user) {
+      this.ioenBalance = user.rewards_points
+    }
 
     // Get Collections Info
     this.$store.dispatch('getMyCollections').then((collections) => {

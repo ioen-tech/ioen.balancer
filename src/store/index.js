@@ -9,19 +9,40 @@ export default createStore({
   },
   getters: {
     isLoggedIn(state) {
-      return state.user
+      if (state.user && state.group) {
+        return true
+      } else if (JSON.parse(localStorage.getItem('userInfo'))) {
+        state.user = JSON.parse(localStorage.getItem('userInfo'))
+        return true
+      }
+      return false
+    },
+    isGroupMember(state) {
+      if (state.group) {
+        return true
+      } else if ( JSON.parse(localStorage.getItem('groupInfo'))) {
+        state.group = JSON.parse(localStorage.getItem('groupInfo'))
+        return true
+      }
+      return false
     },
     isGroupAdmin(state) {
 
       if (state.user) {
         return state.user.is_group_admin
       }
+    },
+    getGroupLogo(state) {
+      if (state.group) {
+        return axios.defaults.baseURL + 'logos/' + state.group.group_logo
+      }
+      return ''
     }
   },
   mutations: {
     setUser(state, user) {
       state.user = user
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('userInfo', JSON.stringify(user))
     },
     setToken(state, token) {
       state.token = token
@@ -29,7 +50,7 @@ export default createStore({
     },
     setGroup(state, group) {
       state.group = group
-      localStorage.setItem('group', JSON.stringify(group))
+      localStorage.setItem('groupInfo', JSON.stringify(group))
     }
   },
   actions: {

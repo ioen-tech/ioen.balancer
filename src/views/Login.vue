@@ -48,7 +48,7 @@ import {Device} from '@capacitor/device'
 export default {
   name: 'Login',
   created() {
-    const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem('userInfo'))
     if (user) {
       // Redirect to home page
       this.$router.push('/home')
@@ -64,6 +64,16 @@ export default {
 
         const {token, route} = res.data
         this.$store.commit('setToken', token)
+
+        // Get logged In user and store into localstorage.
+        const userInfo = await this.$store.dispatch('getLoggedInUser')
+        this.$store.commit('setUser', userInfo.data)
+        localStorage.setItem('userInfo', JSON.stringify(userInfo.data))
+
+        // Get user group info and store into localstorage.
+        const groupInfo = await this.$store.dispatch('getGroupInfo')
+        this.$store.commit('setGroup', groupInfo.data)
+        localStorage.setItem('groupInfo', JSON.stringify(groupInfo.data))
 
         this.$router.push(route)
       } catch(e) {
