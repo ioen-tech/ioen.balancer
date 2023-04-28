@@ -8,12 +8,19 @@ import * as mdijs from "@mdi/js";
 import mdiVue from "mdi-vue/v3";
 import Socketio from "@/plugins/Socket.io";
 
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faChargingStation, faBitcoinSign, faSolarPanel } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faChargingStation, faBitcoinSign, faSolarPanel)
+
 const app = createApp(App);
 
 const rootComponent = app
   .use(store)
   .use(router)
-  .use(mdiVue, { icons: mdijs })
+  .component('font-awesome-icon', FontAwesomeIcon)
   .use(Socketio, {
     connection: "http://localhost:3000",
     options: {},

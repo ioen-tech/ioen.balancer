@@ -2,13 +2,13 @@
   <div class="mobile-nav">
     <div class="bloc-icon w-100">
       <router-link to="/home"  class="icon w-100 p-3">
-        <mdicon name="monitor-dashboard" size="35px" />
+        <font-awesome-icon icon="fa-solid fa-solar-panel" size="2x"/>
       </router-link>
       
     </div>
     <div class="bloc-icon w-100">
       <router-link to="/redemption" class="icon w-100 p-3">
-        <mdicon name="bitcoin"  size="35px"/>
+        <font-awesome-icon icon="fa-solid fa-bitcoin-sign" size="2x"/>
       </router-link>
       
     </div>
