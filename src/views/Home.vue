@@ -63,36 +63,36 @@ export default {
   components: {
     ChartComponent
   },
-  mounted() {
+  async mounted() {
     
     this.getChartData()
-
-    var self = this
-    this.getUserInfo()
-    this.getGroupInfo()
-
-    // Update Chatdata, group and userinfo if socket data
-    // is receive from the socket server.
-    this.$socket.on(this.groupInfo.group_name, (energy) => {
-
-      this.getChartData()
-      // Get the updated user info
-      this.$store.dispatch('getLoggedInUser').then((res) => {
-        this.$store.commit('setUser', res.data)
-        this.userInfo = res.data
-      })
-      // Get Group Info
-      this.$store.dispatch('getGroupInfo').then((group) => {
-        this.$store.commit('setGroup', group.data)
-        this.groupInfo = group.data
-        this.updateBackground(self.groupInfo.group_energy)
-      })
-
-    })
 
   },
   async created() {
 
+    this.getUserInfo()
+    this.groupInfo = await this.getGroupInfo()
+
+    if (this.groupInfo != null) {
+      // Update Chartdata, group and userinfo if socket data
+      // is receive from the socket server.
+      this.$socket.on(this.groupInfo.group_name, (energy) => {
+
+        this.getChartData()
+        // Get the updated user info
+        this.$store.dispatch('getLoggedInUser').then((res) => {
+          this.$store.commit('setUser', res.data)
+          this.userInfo = res.data
+        })
+        // Get Group Info
+        this.$store.dispatch('getGroupInfo').then((group) => {
+          this.$store.commit('setGroup', group.data)
+          this.groupInfo = group.data
+          this.updateBackground(this.groupInfo.group_energy)
+        })
+
+      })
+    }
     // Get the background info from localStorage.
     const localBg = localStorage.getItem('background')
     if (localBg) {
@@ -115,12 +115,15 @@ export default {
   },
   methods: {
     getUserInfo() {
-      console.log("Home: User: ", JSON.parse(localStorage.getItem("userInfo")))
-      return this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+      this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
     },
-    getGroupInfo() {
-      console.log("Home: Group: ", JSON.parse(localStorage.getItem("groupInfo")))
-      return this.groupInfo = JSON.parse(localStorage.getItem('groupInfo'))
+    async getGroupInfo() {
+      if (JSON.parse(localStorage.getItem("groupInfo")) != null) {
+        return (JSON.parse(localStorage.getItem('groupInfo')))
+      }
+      const g = await this.$store.dispatch('getGroupInfo')
+      return (g.data)
+
     },
     async getChartData() {
       this.$store.dispatch('getEnergyLogs').then((logs) => {
