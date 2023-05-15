@@ -1,0 +1,3 @@
+[submodule "ioen.balancer.api"]
+	path = ioen.balancer.api
+	url = git@github.com:ioen-tech/ioen.balancer.api.git
