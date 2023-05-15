@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  redis:
+    container_name: redis
+    image: redis:7.0.11
+    command: redis-server --bind 0.0.0.0
+    ports:
+      - '6379:6379'
+    restart: always
+  db:
+    container_name: mariadb
+    ports:
+      - '3307:3306'
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: Admin1234!!
+      MARIADB_DATABASE: nanogrid
+      MARIADB_USER: local_user
+      MARIADB_PASSWORD: local_password
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  db:
