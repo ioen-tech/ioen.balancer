@@ -4,8 +4,6 @@ import router from "./router";
 import store from "./store";
 import "./axios";
 import "bootstrap/dist/css/bootstrap.css";
-import * as mdijs from "@mdi/js";
-import mdiVue from "mdi-vue/v3";
 import Socketio from "@/plugins/Socket.io";
 
 
