@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:db": "docker-compose up",
+    "build": "docker-compose build --no-cache --progress=plain",
+    "start": "docker-compose up",
     "stop": "docker-compose down",
     "clean": "docker system prune -af",
     "clean:volumes": "docker volume prune -f"

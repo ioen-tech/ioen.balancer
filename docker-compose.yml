@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.9.2'
 services:
   redis:
     container_name: redis
@@ -20,6 +20,39 @@ services:
       MARIADB_PASSWORD: local_password
     volumes:
       - db:/var/lib/mysql
+  backend:
+    links:
+      - db
+      - redis
+    depends_on:
+      - db
+      - redis
+    container_name: backend
+    ports:
+      - '3000:3000'
+    environment:
+      - JWT_SECRET="MyS3cr3tK3Y"
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
+      - FRONIUS_URL=https://api.solarweb.com/swqapi/iam/jwt
+      - FRONIUS_PVSYSTEMS_URL=https://api.solarweb.com/swqapi/pvsystems
+      - FRONIUS_PVSYSTEMS_AGGDATA=flowdata
+
+      - PRODUCTION=false
+
+      - SOCKETIO_SERVER=localhost
+      - SOCKETIO_PORT=3000
+      - DATABASE_URL=mysql://root:Admin1234!!@db:3306/nanogrid
+    build:
+      context: backend
+      dockerfile: Dockerfile
+  frontend:
+    container_name: frontend
+    ports:
+      - '8080:8080'
+    build:
+      context: frontend
+      dockerfile: Dockerfile
 volumes:
   db:
