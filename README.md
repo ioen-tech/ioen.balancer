@@ -6,24 +6,24 @@ TBD
 
 Mysql and Redis will be installed via a docker-compose command.  This will make the installation easy for all if not most of the OS Platform (Linux, Windows, Mac..)
 
-### QuickStart
+# QuickStart
 
 Clone [ioen.balancer](https://github.com/ioen-tech/ioen.balancer) and make sure to point to the `next` branch.
 
-Below is the top-level directory layout
-.
-├── backend
-│ └── prisma
-├── frontend
-├── package.json
-├── docker-compose.yml
-└── README.md
+Below is the top-level directory layout  
+.  
+|── backend  
+| - - -└── prisma  
+|── frontend  
+|── package.json  
+|── docker-compose.yml  
+|── README.md 
 
-`backend` - This is the git repository for the API
-`prisma`  - This is the git repository for managing the database.
+`backend` - This is the git repository for the API  
+`prisma`  - This is the git repository for managing the database.  
 `frontend` - This ia the git repository for the Vuejs UI.
 
-#### 1.  Register and update git submodules.
+## 1.  Register and update git submodules.
 You only need to do this after cloning the code for the first time.
 
 Run the following command in the root directory of `ioen.balancer`
@@ -36,7 +36,7 @@ Go to the `prisma` folder and the same command above:
 
 These commands will update the code inside the `ioen.balancer` which pulls the latest code of the `backend` and `prisma` from their respective git repository.
 
-#### 2.  Set the Environment Variables in the docker-compose.yml file
+## 2.  Set the Environment Variables in the docker-compose.yml file
 The following environment variables below has already been set in the docker-compose.yml file.  Just modify the docker-compose.yml file for any changes in the env variables.
 ````bash
 JWT_SECRET
@@ -50,7 +50,7 @@ SOCKETIO_SERVER=
 SOCKETIO_PORT=
 ````
 
-#### 3.  Run the project
+## 3.  Run the project
 Run the following command in the root directory of `ioen.balancer`
 ````bash
 npm run build
@@ -64,5 +64,5 @@ The following are the docker scripts that can be use:
 * `npm run clean` - This will remove all containers, networks and images.
 * `npm run clean:volumes` - Remove all unused local volumes.
 
-#### 4.  Access the Frontend/UI
+## 4.  Access the Frontend/UI
 * The ui can now be access via `localhost:8080` by default.
