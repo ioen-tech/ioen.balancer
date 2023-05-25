@@ -27,17 +27,34 @@ Below is the top-level directory layout
 You only need to do this after cloning the code for the first time.
 
 Run the following command in the root directory of `ioen.balancer`
--  `git submodule init`
--  `git submodule update`
+````bash
+git submodule update --init --recursive
+````
+These command will update the code inside the `ioen.balancer` which pulls the latest code of the `backend` and `prisma` from their respective git repository.
 
-Go to the `prisma` folder and the same command above:
--  `git submodule init`
--  `git submodule update`
+## 2.  Run the project via npm run command.
+Run the following command in the root directory of `ioen.balancer`
+````bash
+npm run build
+npm run start
+````
 
-These commands will update the code inside the `ioen.balancer` which pulls the latest code of the `backend` and `prisma` from their respective git repository.
+## 3.  Access the Frontend/UI
+* The ui can now be access via `localhost:8080` by default.
 
-## 2.  Set the Environment Variables in the docker-compose.yml file
-The following environment variables below has already been set in the docker-compose.yml file.  Just modify the docker-compose.yml file for any changes in the env variables.
+### List of NPM run command script.
+
+The following are the npm run command scripts that uses docker commands to run/stop the app.
+* `npm run build` - builds Docker images from a dockerfile (frontend, backend, prisma).
+* `npm run start` - starts a container which includes all of the built images and will automaticaly install and start `mysql/mariadb` and `redis` server.
+* `npm run stop` - stop a running container.
+* `npm run clean` - removes all containers, networks and images.
+* `npm run clean:volumes` - removes all unused local volumes.
+
+
+### Environment Variables
+The following environment variables below has already been set in the `docker-compose.yml` file.
+If there are any changes in the values below just modify the `docker-compose.yml` file and run `npm run build` again in the root directory of `ioen.balancer`
 ````bash
 JWT_SECRET
 REDIS_HOST=
@@ -49,20 +66,3 @@ PRODUCTION=
 SOCKETIO_SERVER=
 SOCKETIO_PORT=
 ````
-
-## 3.  Run the project
-Run the following command in the root directory of `ioen.balancer`
-````bash
-npm run build
-npm run start
-````
-
-The following are the docker scripts that can be use:
-* `npm run build` - This will build dockerfiles for each project and make it to a docker image.
-* `npm run start` - This will start a container which includes all the images(frontend, backend) being built and will automaticaly install `mysql` and `redis` server.
-* `npm run stop` - This will stop the running container.
-* `npm run clean` - This will remove all containers, networks and images.
-* `npm run clean:volumes` - Remove all unused local volumes.
-
-## 4.  Access the Frontend/UI
-* The ui can now be access via `localhost:8080` by default.
