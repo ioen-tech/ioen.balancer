@@ -40,56 +40,6 @@
           </div>
           <div class="mb-3">
             <input
-              v-model="fronius_userid"
-              type="text"
-              class="form-control"
-              id="fronius_userid"
-              placeholder="Fronius User ID"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <input
-              v-model="fronius_password"
-              type="password"
-              class="form-control"
-              id="fronius_password"
-              placeholder="Fronius Password"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <input
-              v-model="fronius_accesskey_id"
-              type="password"
-              class="form-control"
-              id="fronius_accesskey_id"
-              placeholder="Fronius AccessKey ID"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <input
-              v-model="fronius_accesskey_value"
-              type="password"
-              class="form-control"
-              id="fronius_accesskey_value"
-              placeholder="Fronius AccessKey Value"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <input
-              v-model="fronius_device_id"
-              type="password"
-              class="form-control"
-              id="fronius_device_id"
-              placeholder="Fronius Device ID"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <input
               v-model="retailer"
               type="text"
               class="form-control"
@@ -99,21 +49,25 @@
             />
           </div>
           <div class="mb-3">
-            <select class="form-select" aria-label="Meter Hardware Options" required>
-              <option selected>Please Select your Meter Hardware</option>
-              <option value="1">Fronius</option>
+            <select class="form-select" aria-label="Meter Hardware Options" v-model="hardwareOptions" required>
+              <option value="fronius">Fronius</option>
+              <option value="others">Others</option>
             </select>
           </div>
-          <div class="input-group">
-            <input
-              v-model="wallet_address"
-              type="text"
-              class="form-control"
-              id="wallet_address"
-              placeholder="Wallet Address"
-              required
+          <div v-if="hardwareOptions === 'fronius'">
+            <Fronius 
+              v-model:userId="userId"
+              v-model:froniusPassword="froniusPassword"
+              v-model:accessKeyId="accessKeyId"
+              v-model:accessKeyValue="accessKeyValue"
+              v-model:deviceId="deviceId"
             />
-              <button type="button" class="btn btn-success">Create New Wallet</button>
+          </div>
+          <div v-if="hardwareOptions === 'others'">
+            <Others 
+              v-model:othersUserId="othersUserId"
+              v-model:othersPassword="othersPassword"
+            />
           </div>
           <div class="mt-3">
             <button type="submit" class="btn btn-primary" style="width: 50%">Register</button>
@@ -132,21 +86,30 @@
 import { mapMutations } from "vuex";
 import axios from "axios";
 import {Device} from '@capacitor/device'
+import Fronius from '../components/Fronius.vue';
+import Others from '../components/Others.vue';
 
 export default {
+  components: {
+    Fronius,
+    Others
+  },
   data() {
     return {
+      hardwareOptions: "fronius",
       username: "",
       email: "",
       password: "",
-      fronius_userid: "",
-      fronius_password: "",
-      fronius_accesskey_id: "",
-      fronius_accesskey_value: "",
-      fronius_device_id: "",
+      userId: "",
+      froniusPassword: "",
+      accessKeyId: "",
+      accessKeyValue: "",
+      deviceId: "",
       retailer: "",
       meter_hardware: "",
       wallet_address: "",
+      othersUserId: "",
+      othersPassword: "",
       error_message:"",
     };
   },
@@ -157,11 +120,13 @@ export default {
         username: this.username,
         email: this.email,
         password: this.password,
-        fronius_userid: this.fronius_userid,
-        fronius_password: this.fronius_password,
-        fronius_accesskey_id: this.fronius_accesskey_id,
-        fronius_accesskey_value: this.fronius_accesskey_value,
-        fronius_device_id: this.fronius_device_id,
+        fronius_userid: this.userId,
+        fronius_password: this.froniusPassword,
+        fronius_accesskey_id: this.accessKeyId,
+        fronius_accesskey_value: this.accessKeyValue,
+        fronius_device_id: this.deviceId,
+        others_userId: this.othersUserId,
+        others_password: this.othersPassword,
         retailer: this.retailer,
         meter_hardware: this.meter_hardware,
         wallet_address: this.wallet_address,
