@@ -51,6 +51,7 @@ services:
     volumes:
       - ./backend:/usr/src/app/backend
       - /usr/src/app/backend/node_modules
+      - /usr/src/app/backend/prisma
   frontend:
     container_name: frontend
     ports:
@@ -58,5 +59,8 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app/frontend
+      - /usr/src/app/frontend/node_modules
 volumes:
   db:
