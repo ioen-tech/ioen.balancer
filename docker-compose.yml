@@ -44,9 +44,13 @@ services:
       - SOCKETIO_SERVER=localhost
       - SOCKETIO_PORT=3000
       - DATABASE_URL=mysql://root:Admin1234!!@db:3306/nanogrid
+      - NODE_ENV=development
     build:
       context: backend
       dockerfile: Dockerfile
+    volumes:
+      - ./backend:/usr/src/app/backend
+      - /usr/src/app/backend/node_modules
   frontend:
     container_name: frontend
     ports:
